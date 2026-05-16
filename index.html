@@ -1,653 +1,849 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SAM · WIREFRAME // 1999</title>
-    <!-- Fuentes retro/mono -->
-    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-        body {
-            background-color: #000000;   /* black puro */
-            font-family: 'Space Mono', 'Courier New', monospace;
-            color: #FFFFFF;
-            line-height: 1.4;
-            padding: 2rem 1.5rem;
-        }
+<title>SAM // Vib-Ribbon Profile</title>
 
-        /* estructura wireframe angular */
-        .container {
-            max-width: 1300px;
-            margin: 0 auto;
-            border: 1px solid #FFFFFF;   /* borde blanco fino general */
-            padding: 2rem 1.8rem;
-            position: relative;
-            background: transparent;
-        }
+<!-- Fuente retro -->
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
 
-        /* líneas decorativas tipo PS1 / Vib-Ribbon */
-        .corner-deco {
-            position: absolute;
-            width: 24px;
-            height: 24px;
-            border-color: #39FF14;   /* verde neón por defecto, se puede cambiar */
-            border-style: solid;
-            border-width: 0;
-            pointer-events: none;
-            z-index: 2;
-        }
-        .tl {
-            top: -1px;
-            left: -1px;
-            border-top-width: 2px;
-            border-left-width: 2px;
-        }
-        .tr {
-            top: -1px;
-            right: -1px;
-            border-top-width: 2px;
-            border-right-width: 2px;
-        }
-        .bl {
-            bottom: -1px;
-            left: -1px;
-            border-bottom-width: 2px;
-            border-left-width: 2px;
-        }
-        .br {
-            bottom: -1px;
-            right: -1px;
-            border-bottom-width: 2px;
-            border-right-width: 2px;
-        }
+<style>
 
-        /* rejilla wireframe sutil (líneas quebradas) */
-        .wire-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 1px;
-            background: transparent;
-            position: absolute;
-            inset: 0;
-            pointer-events: none;
-            opacity: 0.18;
-            z-index: 0;
-        }
-        .wire-grid span {
-            border-right: 1px dashed #39FF14;
-            border-bottom: 1px dashed #FF00FF;
-        }
+/* =========================================================
+   VARIABLES
+========================================================= */
 
-        /* layout principal */
-        .hero-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-            margin-bottom: 2.8rem;
-            border-bottom: 1px solid #FFFFFF;
-            padding-bottom: 2rem;
-            position: relative;
-            z-index: 2;
-        }
+:root{
+  --bg:#000000;
+  --white:#ffffff;
 
-        /* contenedor de imagen wireframe */
-        .photo-frame {
-            flex: 1.2;
-            min-width: 220px;
-            border: 1px solid #FFFFFF;
-            background: #000000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1.5rem;
-            aspect-ratio: 1 / 1.1;
-            position: relative;
-        }
+  --accent1:#39FF14;
+  --accent2:#00FFFF;
+  --accent3:#FF00FF;
 
-        .wire-silhouette {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
+  --scan-opacity:0.07;
+}
 
-        /* SVG wireframe humano angular (estilo poligonal) */
-        .avatar-svg {
-            width: 85%;
-            max-width: 220px;
-            stroke: #FFFFFF;
-            stroke-width: 1.5;
-            fill: none;
-        }
+/* =========================================================
+   RESET
+========================================================= */
 
-        .avatar-img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
-            display: none; /* oculto hasta que se suba imagen */
-        }
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
 
-        .photo-frame img.active-img {
-            display: block;
-        }
+html,body{
+  width:100%;
+  min-height:100%;
+  background:var(--bg);
+  overflow-x:hidden;
+  color:white;
+  font-family:'Fira Code', monospace;
+}
 
-        .photo-frame .wire-silhouette.hide-silhouette {
-            display: none;
-        }
+/* =========================================================
+   FONDO GRID + SCANLINES
+========================================================= */
 
-        /* controles de imagen */
-        .img-upload-btn {
-            position: absolute;
-            bottom: 12px;
-            right: 12px;
-            background: #000000;
-            border: 1px solid #39FF14;
-            color: #39FF14;
-            font-family: 'Space Mono', monospace;
-            font-size: 0.7rem;
-            padding: 4px 8px;
-            cursor: pointer;
-            z-index: 5;
-            transition: 0.1s linear;
-        }
-        .img-upload-btn:hover {
-            background: #39FF14;
-            color: black;
-            border-color: white;
-        }
+body::before{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;
+  z-index:0;
+}
 
-        /* info personal */
-        .info-panel {
-            flex: 2;
-            min-width: 260px;
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
+body::after{
+  content:"";
+  position:fixed;
+  inset:0;
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,255,255,var(--scan-opacity)) 0px,
+      rgba(255,255,255,var(--scan-opacity)) 1px,
+      transparent 2px,
+      transparent 4px
+    );
+  mix-blend-mode:screen;
+  animation:scanMove 8s linear infinite;
+  pointer-events:none;
+  z-index:2;
+}
 
-        .name-row {
-            font-size: 3rem;
-            font-weight: 700;
-            letter-spacing: -1px;
-            border-left: 3px solid #39FF14;
-            padding-left: 0.8rem;
-            font-family: 'Press Start 2P', 'Courier New', monospace;
-            word-break: break-word;
-        }
+@keyframes scanMove{
+  from{
+    transform:translateY(-100%);
+  }
+  to{
+    transform:translateY(100%);
+  }
+}
 
-        .pronouns, .birth-city {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            font-size: 0.9rem;
-            border-bottom: 1px dashed #FFFFFF;
-            padding-bottom: 0.5rem;
-        }
+/* =========================================================
+   PARTÍCULAS
+========================================================= */
 
-        .data-line {
-            background: transparent;
-            border: 1px dotted #FF00FF;
-            padding: 0.2rem 0.5rem;
-            display: inline-block;
-        }
+.particles{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  pointer-events:none;
+  z-index:1;
+}
 
-        .activity {
-            background: #000000;
-            border-left: 3px solid cyan;
-            padding: 0.5rem 0 0.5rem 0.8rem;
-            font-weight: bold;
-        }
+.particle{
+  position:absolute;
+  width:6px;
+  height:1px;
+  background:white;
+  opacity:0.3;
+  animation:floatParticle linear infinite;
+}
 
-        /* sobre mi + adicional */
-        .bio-section {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin: 2rem 0;
-            border-top: 1px solid #FFFFFF;
-            padding-top: 1.8rem;
-        }
+@keyframes floatParticle{
+  from{
+    transform:translateY(0) translateX(0) rotate(0deg);
+  }
+  to{
+    transform:translateY(-120vh) translateX(40px) rotate(40deg);
+  }
+}
 
-        .bio-card, .extra-card {
-            border: 1px solid #FFFFFF;
-            padding: 1.2rem;
-            position: relative;
-        }
+/* =========================================================
+   MAIN
+========================================================= */
 
-        .bio-card h3, .extra-card h3 {
-            font-family: 'Press Start 2P', monospace;
-            font-size: 0.8rem;
-            margin-bottom: 0.8rem;
-            letter-spacing: 1px;
-            color: #39FF14;
-        }
+.container{
+  position:relative;
+  z-index:5;
+  width:min(1200px,92%);
+  margin:auto;
+  padding:40px 0 120px;
+}
 
-        .editable-text {
-            outline: none;
-            transition: all 0.05s ease;
-            word-break: break-word;
-        }
-        .editable-text:focus {
-            border: 1px solid #39FF14;
-            background-color: #111;
-            padding: 2px;
-        }
+/* =========================================================
+   HEADER
+========================================================= */
 
-        /* línea adicional con estilo */
-        .extra-line {
-            margin-top: 1rem;
-            font-style: italic;
-            border-top: 1px dashed #FF00FF;
-            padding-top: 0.5rem;
-        }
+.hero{
+  display:grid;
+  grid-template-columns:420px 1fr;
+  gap:40px;
+  align-items:center;
+}
 
-        /* modo edición: botones y barra */
-        .edit-toolbar {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.8rem;
-            gap: 1rem;
-            border-bottom: 1px solid #FFFFFF;
-            padding-bottom: 0.8rem;
-        }
+@media(max-width:900px){
+  .hero{
+    grid-template-columns:1fr;
+  }
+}
 
-        .btn-wire {
-            background: #000000;
-            border: 1px solid #FFFFFF;
-            color: #FFFFFF;
-            font-family: 'Space Mono', monospace;
-            padding: 6px 14px;
-            cursor: pointer;
-            font-size: 0.8rem;
-            transition: 0.1s linear;
-        }
-        .btn-wire:hover {
-            background: #FFFFFF;
-            color: #000000;
-        }
+/* =========================================================
+   FOTO
+========================================================= */
 
-        .accent-picker {
-            display: flex;
-            gap: 0.5rem;
-            align-items: center;
-        }
-        .accent-color {
-            width: 28px;
-            height: 28px;
-            border: 1px solid white;
-            cursor: pointer;
-            background-color: #39FF14;
-        }
-        .accent-color.cyan {
-            background-color: #00FFFF;
-        }
-        .accent-color.magenta {
-            background-color: #FF00FF;
-        }
-        .accent-color.green {
-            background-color: #39FF14;
-        }
+.photo-frame{
+  position:relative;
+  aspect-ratio:1/1.1;
+  border:2px solid white;
+  outline:1px solid var(--accent2);
+  padding:14px;
+  overflow:hidden;
+  background:black;
 
-        /* responsivo */
-        @media (max-width: 760px) {
-            body { padding: 1rem; }
-            .container { padding: 1rem; }
-            .bio-section { grid-template-columns: 1fr; }
-            .name-row { font-size: 1.9rem; }
-        }
+  box-shadow:
+    0 0 8px rgba(255,255,255,0.3),
+    0 0 12px rgba(0,255,255,0.2);
 
-        footer {
-            text-align: center;
-            margin-top: 2rem;
-            font-size: 0.65rem;
-            border-top: 1px solid #FFFFFF;
-            padding-top: 1rem;
-            opacity: 0.7;
-        }
-        input, button, .btn-wire {
-            background: black;
-            color: white;
-        }
-        .hidden-file {
-            display: none;
-        }
-        [contenteditable="true"] {
-            cursor: text;
-        }
-    </style>
+  animation:borderPulse 3s infinite;
+}
+
+.photo-frame::before,
+.photo-frame::after{
+  content:"";
+  position:absolute;
+  border:1px solid var(--accent1);
+  width:50px;
+  height:50px;
+  animation:flicker 2s infinite;
+}
+
+.photo-frame::before{
+  top:10px;
+  left:10px;
+  border-right:none;
+  border-bottom:none;
+}
+
+.photo-frame::after{
+  right:10px;
+  bottom:10px;
+  border-left:none;
+  border-top:none;
+}
+
+@keyframes borderPulse{
+  0%,100%{
+    box-shadow:
+      0 0 8px rgba(255,255,255,0.2),
+      0 0 14px rgba(255,255,255,0.2);
+  }
+  50%{
+    box-shadow:
+      0 0 10px rgba(255,255,255,0.5),
+      0 0 18px rgba(0,255,255,0.5);
+  }
+}
+
+.photo-content{
+  width:100%;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+  border:1px solid white;
+  background:#050505;
+}
+
+#profileImage{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:none;
+  filter:contrast(1.1) saturate(0.9);
+}
+
+/* =========================================================
+   AVATAR WIREFRAME
+========================================================= */
+
+.wire-avatar{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.wire-avatar svg{
+  width:70%;
+  height:70%;
+}
+
+.wire-avatar path,
+.wire-avatar circle,
+.wire-avatar line{
+  stroke:white;
+  stroke-width:2;
+  fill:none;
+  animation:vibe 0.12s infinite alternate;
+}
+
+@keyframes vibe{
+  from{
+    transform:translateX(0px) rotate(0deg);
+    opacity:0.9;
+  }
+  to{
+    transform:translateX(0.7px) rotate(0.3deg);
+    opacity:1;
+  }
+}
+
+/* =========================================================
+   BOTÓN FOTO
+========================================================= */
+
+.upload-btn{
+  margin-top:18px;
+  display:inline-block;
+  padding:12px 16px;
+  border:1px solid white;
+  background:black;
+  color:white;
+  cursor:pointer;
+  text-transform:uppercase;
+  font-size:12px;
+  letter-spacing:1px;
+  transition:0.2s;
+  position:relative;
+}
+
+.upload-btn:hover{
+  color:var(--accent1);
+  border-color:var(--accent1);
+  box-shadow:0 0 12px var(--accent1);
+}
+
+#photoInput{
+  display:none;
+}
+
+/* =========================================================
+   INFO PANEL
+========================================================= */
+
+.info{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+/* =========================================================
+   TÍTULO GLITCH
+========================================================= */
+
+.glitch{
+  position:relative;
+  font-family:'Press Start 2P', monospace;
+  font-size:clamp(2.2rem,6vw,5rem);
+  line-height:1.2;
+  color:white;
+  text-shadow:
+    2px 0 var(--accent2),
+    -2px 0 var(--accent3);
+
+  animation:glitchAnim 2s ease;
+}
+
+@keyframes glitchAnim{
+  0%{
+    opacity:0;
+    transform:translateY(20px);
+  }
+  20%{
+    opacity:1;
+    transform:translateY(0);
+  }
+  22%{
+    transform:translateX(-2px);
+  }
+  24%{
+    transform:translateX(2px);
+  }
+  26%{
+    transform:translateX(0);
+  }
+  100%{
+    opacity:1;
+  }
+}
+
+/* =========================================================
+   BLOQUES EDITABLES
+========================================================= */
+
+.panel{
+  position:relative;
+  border:1px solid white;
+  padding:18px;
+  background:rgba(0,0,0,0.7);
+
+  box-shadow:
+    inset 0 0 0 1px rgba(255,255,255,0.2),
+    0 0 10px rgba(255,255,255,0.08);
+
+  animation:panelVibe 4s infinite;
+}
+
+.panel::before{
+  content:"";
+  position:absolute;
+  inset:6px;
+  border:1px solid rgba(255,255,255,0.2);
+  pointer-events:none;
+}
+
+@keyframes panelVibe{
+  0%,100%{
+    transform:translateX(0px);
+  }
+  50%{
+    transform:translateX(0.5px);
+  }
+}
+
+.editable{
+  outline:none;
+  transition:0.15s;
+  position:relative;
+}
+
+.editable:hover,
+.editable:focus{
+  color:white;
+  text-shadow:0 0 8px white;
+}
+
+.editable:focus{
+  border-color:var(--accent2);
+  box-shadow:
+    0 0 12px var(--accent2),
+    inset 0 0 12px rgba(0,255,255,0.15);
+}
+
+.label{
+  color:var(--accent1);
+  margin-bottom:8px;
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+  animation:flicker 3s infinite;
+}
+
+.big-text{
+  font-size:1.1rem;
+  line-height:1.8;
+}
+
+/* =========================================================
+   DECORACIÓN ANGULAR
+========================================================= */
+
+.decor{
+  width:120px;
+  height:18px;
+  border-left:2px solid white;
+  border-bottom:2px solid var(--accent3);
+  transform:skewX(-40deg);
+  margin:12px 0;
+  animation:vibeDecor 0.3s infinite alternate;
+}
+
+@keyframes vibeDecor{
+  from{
+    transform:skewX(-40deg) translateX(0);
+    opacity:0.7;
+  }
+  to{
+    transform:skewX(-40deg) translateX(1px);
+    opacity:1;
+  }
+}
+
+/* =========================================================
+   TEXTO EXTRA
+========================================================= */
+
+.tagline{
+  color:var(--accent3);
+  font-size:0.95rem;
+  letter-spacing:1px;
+  animation:flicker 4s infinite;
+}
+
+/* =========================================================
+   FLICKER
+========================================================= */
+
+@keyframes flicker{
+  0%,18%,22%,25%,53%,57%,100%{
+    opacity:1;
+    filter:brightness(1);
+  }
+
+  20%,24%,55%{
+    opacity:0.4;
+    filter:brightness(1.7);
+  }
+}
+
+/* =========================================================
+   PANEL DE COLORES
+========================================================= */
+
+.color-panel{
+  position:fixed;
+  right:18px;
+  bottom:18px;
+  z-index:100;
+
+  background:black;
+  border:1px solid white;
+  padding:16px;
+  width:220px;
+
+  box-shadow:
+    0 0 12px rgba(255,255,255,0.2),
+    0 0 16px rgba(0,255,255,0.15);
+}
+
+.color-panel h3{
+  font-size:12px;
+  margin-bottom:12px;
+  color:var(--accent2);
+  text-transform:uppercase;
+}
+
+.color-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  margin-bottom:10px;
+  gap:12px;
+}
+
+.color-row span{
+  font-size:11px;
+}
+
+.color-row input{
+  background:none;
+  border:none;
+  width:60px;
+  height:30px;
+  cursor:pointer;
+}
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.footer{
+  margin-top:60px;
+  text-align:center;
+  opacity:0.5;
+  font-size:12px;
+  letter-spacing:2px;
+}
+
+/* =========================================================
+   SELECCIÓN
+========================================================= */
+
+::selection{
+  background:var(--accent2);
+  color:black;
+}
+
+</style>
 </head>
+
 <body>
+
+<!-- =====================================================
+     PARTÍCULAS
+===================================================== -->
+
+<div class="particles" id="particles"></div>
+
+<!-- =====================================================
+     CONTENIDO
+===================================================== -->
+
 <div class="container">
-    <!-- esquinas decorativas retro con acento neón -->
-    <div class="corner-deco tl" id="decoTL"></div>
-    <div class="corner-deco tr" id="decoTR"></div>
-    <div class="corner-deco bl" id="decoBL"></div>
-    <div class="corner-deco br" id="decoBR"></div>
 
-    <div class="edit-toolbar">
-        <div>
-            <button class="btn-wire" id="enableEditModeBtn">✎ EDITAR TEXTO</button>
-            <button class="btn-wire" id="disableEditModeBtn" style="margin-left: 8px;">🔒 BLOQUEAR</button>
+  <section class="hero">
+
+    <!-- FOTO -->
+    <div>
+
+      <div class="photo-frame">
+
+        <div class="photo-content">
+
+          <!-- Imagen -->
+          <img id="profileImage" alt="Foto personal"/>
+
+          <!-- Avatar wireframe -->
+          <div class="wire-avatar" id="wireAvatar">
+
+            <svg viewBox="0 0 200 300">
+
+              <circle cx="100" cy="55" r="28"></circle>
+
+              <line x1="100" y1="83" x2="100" y2="170"></line>
+
+              <line x1="100" y1="110" x2="55" y2="150"></line>
+              <line x1="100" y1="110" x2="145" y2="150"></line>
+
+              <line x1="100" y1="170" x2="70" y2="240"></line>
+              <line x1="100" y1="170" x2="130" y2="240"></line>
+
+              <line x1="55" y1="150" x2="40" y2="220"></line>
+              <line x1="145" y1="150" x2="160" y2="220"></line>
+
+            </svg>
+
+          </div>
+
         </div>
-        <div class="accent-picker">
-            <span style="font-size:0.7rem;">ACENTO:</span>
-            <div class="accent-color green" data-color="#39FF14"></div>
-            <div class="accent-color cyan" data-color="#00FFFF"></div>
-            <div class="accent-color magenta" data-color="#FF00FF"></div>
-        </div>
+
+      </div>
+
+      <!-- Upload -->
+      <label class="upload-btn">
+        Subir foto
+        <input type="file" id="photoInput" accept="image/png, image/jpeg"/>
+      </label>
+
     </div>
 
-    <!-- Hero: foto + info principal -->
-    <div class="hero-section">
-        <div class="photo-frame" id="photoFrame">
-            <div class="wire-silhouette" id="wireSilhouette">
-                <!-- SVG wireframe humano geométrico, angular, estilo PS1 wireframe -->
-                <svg class="avatar-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
-                    <polyline points="100,30 130,70 115,100 100,90 85,100 70,70 100,30" stroke="white" stroke-width="1.5" fill="none"/>
-                    <line x1="100" y1="90" x2="100" y2="140" stroke="white" stroke-width="1.5"/>
-                    <polyline points="100,140 65,190 80,200 100,170 120,200 135,190 100,140" stroke="white" stroke-width="1.5" fill="none"/>
-                    <line x1="100" y1="110" x2="75" y2="135" stroke="white" stroke-width="1.2"/>
-                    <line x1="100" y1="110" x2="125" y2="135" stroke="white" stroke-width="1.2"/>
-                    <circle cx="86" cy="78" r="3" stroke="#FF00FF" stroke-width="1.2" fill="none"/>
-                    <circle cx="114" cy="78" r="3" stroke="#FF00FF" stroke-width="1.2" fill="none"/>
-                </svg>
-            </div>
-            <img id="userImage" class="avatar-img" src="" alt="foto personal" style="display:none;">
-            <input type="file" id="imageUploader" accept="image/*" class="hidden-file">
-            <button class="img-upload-btn" id="uploadImageBtn">📁 SUBIR FOTO</button>
-        </div>
+    <!-- INFO -->
+    <div class="info">
 
-        <div class="info-panel">
-            <div class="name-row editable-text" contenteditable="false" id="editableName">SAM</div>
-            <div class="pronouns">
-                <span class="data-line editable-text" contenteditable="false" id="editablePronouns">El / ella / elle</span>
-                <span class="data-line editable-text" contenteditable="false" id="editableBirthday">🎂 18 de junio</span>
-                <span class="data-line editable-text" contenteditable="false" id="editableCity">📍 Quilpué</span>
-            </div>
-            <div class="activity">
-                <span class="editable-text" contenteditable="false" id="editableActivity">⚡ Principal actividad: Estudiante / Creador</span>
-            </div>
-        </div>
+      <h1 class="glitch editable"
+          contenteditable="true"
+          data-key="name">
+          SAM
+      </h1>
+
+      <div class="decor"></div>
+
+      <div class="panel editable"
+           contenteditable="true"
+           data-key="pronouns">
+
+        <div class="label">Pronombres</div>
+        El / ella / elle
+
+      </div>
+
+      <div class="panel editable"
+           contenteditable="true"
+           data-key="birthday">
+
+        <div class="label">Cumpleaños</div>
+        18 de junio
+
+      </div>
+
+      <div class="panel editable"
+           contenteditable="true"
+           data-key="city">
+
+        <div class="label">Ciudad</div>
+        Quilpué
+
+      </div>
+
+      <div class="panel editable"
+           contenteditable="true"
+           data-key="activity">
+
+        <div class="label">Principal actividad</div>
+        Estudiante / Creador
+
+      </div>
+
+      <div class="panel editable big-text"
+           contenteditable="true"
+           data-key="about">
+
+        <div class="label">Sobre mí</div>
+
+        Mis pasatiempos son hacer animaciones tontas en Blender,
+        jugar, ver casos de internet y ahora ando aprendiendo
+        a hacer juegos en Pico-8
+
+      </div>
+
+      <div class="panel editable tagline"
+           contenteditable="true"
+           data-key="extra">
+
+        Autista y TDAH
+
+      </div>
+
     </div>
 
-    <!-- biografía y línea extra -->
-    <div class="bio-section">
-        <div class="bio-card">
-            <h3>⛓️ SOBRE MÍ</h3>
-            <div class="editable-text" contenteditable="false" id="editableBio">
-                Mis pasatiempos son hacer animaciones tontas en Blender, jugar, ver casos de internet y ahora ando aprendiendo a hacer juegos en Pico-8
-            </div>
-        </div>
-        <div class="extra-card">
-            <h3>◢ NEURODIVERGENCIA</h3>
-            <div class="editable-text extra-line" contenteditable="false" id="editableExtra">
-                Autista y TDAH
-            </div>
-        </div>
-    </div>
-    <footer>
-        <span style="letter-spacing: 2px;">⚡ WIREFRAME GENERATION [1999] • EDITABLE VISUAL ⚡</span>
-    </footer>
+  </section>
+
+  <div class="footer">
+    VIB-RIBBON INSPIRED WIREFRAME INTERFACE
+  </div>
+
+</div>
+
+<!-- =====================================================
+     PANEL DE COLORES
+===================================================== -->
+
+<div class="color-panel">
+
+  <h3>Acentos neón</h3>
+
+  <div class="color-row">
+    <span>Verde</span>
+    <input type="color" id="accent1" value="#39FF14">
+  </div>
+
+  <div class="color-row">
+    <span>Cian</span>
+    <input type="color" id="accent2" value="#00FFFF">
+  </div>
+
+  <div class="color-row">
+    <span>Magenta</span>
+    <input type="color" id="accent3" value="#FF00FF">
+  </div>
+
 </div>
 
 <script>
-    (function(){
-        // ---------- DOM references ----------
-        // elementos editables principales
-        const nameSpan = document.getElementById('editableName');
-        const pronounsSpan = document.getElementById('editablePronouns');
-        const birthdaySpan = document.getElementById('editableBirthday');
-        const citySpan = document.getElementById('editableCity');
-        const activitySpan = document.getElementById('editableActivity');
-        const bioSpan = document.getElementById('editableBio');
-        const extraSpan = document.getElementById('editableExtra');
-        
-        const allEditable = [nameSpan, pronounsSpan, birthdaySpan, citySpan, activitySpan, bioSpan, extraSpan];
-        
-        // botones de modo edición
-        const enableBtn = document.getElementById('enableEditModeBtn');
-        const disableBtn = document.getElementById('disableEditModeBtn');
-        
-        // lógica de edición: activar/desactivar contenteditable
-        function setEditMode(active) {
-            allEditable.forEach(el => {
-                if (el) el.setAttribute('contenteditable', active ? 'true' : 'false');
-            });
-            // feedback visual con borde sutil en focus (ya está en CSS)
-            if(active) {
-                enableBtn.style.border = "1px solid #39FF14";
-                disableBtn.style.border = "1px solid #FFFFFF";
-            } else {
-                enableBtn.style.border = "1px solid #FFFFFF";
-                disableBtn.style.border = "1px solid #FFFFFF";
-                // blur en todos
-                allEditable.forEach(el => el && el.blur());
-            }
-        }
-        
-        enableBtn.addEventListener('click', () => setEditMode(true));
-        disableBtn.addEventListener('click', () => setEditMode(false));
-        
-        // ---------- EDITAR IMAGEN (subida) ----------
-        const uploadBtn = document.getElementById('uploadImageBtn');
-        const fileInput = document.getElementById('imageUploader');
-        const userImg = document.getElementById('userImage');
-        const wireSilhouetteDiv = document.getElementById('wireSilhouette');
-        
-        uploadBtn.addEventListener('click', () => {
-            fileInput.click();
-        });
-        
-        fileInput.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (file && file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    userImg.src = e.target.result;
-                    userImg.classList.add('active-img');
-                    userImg.style.display = 'block';
-                    // ocultar silueta wireframe
-                    wireSilhouetteDiv.classList.add('hide-silhouette');
-                    wireSilhouetteDiv.style.display = 'none';
-                };
-                reader.readAsDataURL(file);
-            } else if(file) {
-                alert("por favor selecciona una imagen válida (jpg, png, gif)");
-            }
-        });
-        
-        // Opcional: reset imagen (opcional, pero se puede dobleclick para resetear la silueta? mejor agregar un botón oculto? 
-        // Para completar, si el usuario hace doble click en el frame, restablece la silueta wireframe.
-        const photoFrameDiv = document.getElementById('photoFrame');
-        photoFrameDiv.addEventListener('dblclick', (e) => {
-            // Restablecer a la silueta wireframe original
-            userImg.style.display = 'none';
-            userImg.classList.remove('active-img');
-            userImg.src = "";
-            wireSilhouetteDiv.classList.remove('hide-silhouette');
-            wireSilhouetteDiv.style.display = 'flex';
-            fileInput.value = '';  // limpiar input
-        });
-        
-        // ---------- selector de colores de acento (cambia líneas decorativas, bordes específicos) ----------
-        const accentColors = document.querySelectorAll('.accent-color');
-        const decoTl = document.getElementById('decoTL');
-        const decoTr = document.getElementById('decoTR');
-        const decoBl = document.getElementById('decoBL');
-        const decoBr = document.getElementById('decoBr');
-        
-        // también afectamos a los bordes de acentos (botón upload, h3, etc)
-        function setAccentColor(color) {
-            // esquinas decorativas
-            const corners = [decoTl, decoTr, decoBl, decoBr];
-            corners.forEach(corner => {
-                if(corner) corner.style.borderColor = color;
-            });
-            // cambiar bordes de elementos destacados: upload btn, headings, activity left border etc
-            uploadBtn.style.borderColor = color;
-            const h3tags = document.querySelectorAll('.bio-card h3, .extra-card h3');
-            h3tags.forEach(h3 => h3.style.color = color);
-            const activityDiv = document.querySelector('.activity');
-            if(activityDiv) activityDiv.style.borderLeftColor = color;
-            const nameRowDiv = document.querySelector('.name-row');
-            if(nameRowDiv) nameRowDiv.style.borderLeftColor = color;
-            // líneas de acentos adicionales: pseudo wire grid? no tocar mucho, pero los bordes de los elementos del toolbar
-            const editBtn = document.getElementById('enableEditModeBtn');
-            if(editBtn && document.activeElement !== editBtn) {
-                // solo para resaltar modo edición pero no lo forzamos, mantenemos estética
-            }
-            // cambiar el borde focus de los editables a ese color (opcional)
-            const style = document.createElement('style');
-            style.id = 'dynamicAccentStyle';
-            const oldStyle = document.getElementById('dynamicAccentStyle');
-            if(oldStyle) oldStyle.remove();
-            style.id = 'dynamicAccentStyle';
-            style.textContent = `
-                .editable-text:focus {
-                    border-color: ${color} !important;
-                    outline: none;
-                }
-                .img-upload-btn:hover {
-                    background-color: ${color};
-                    border-color: white;
-                    color: black;
-                }
-                .btn-wire:hover {
-                    background: ${color};
-                    color: black;
-                    border-color: white;
-                }
-            `;
-            document.head.appendChild(style);
-        }
-        
-        accentColors.forEach(swatch => {
-            swatch.addEventListener('click', (e) => {
-                const color = swatch.getAttribute('data-color');
-                if(color) setAccentColor(color);
-            });
-        });
-        
-        // establecer color verde neón por defecto
-        setAccentColor('#39FF14');
-        
-        // ---------- garantizar que los datos iniciales coincidan con la estructura ----------
-        // (si por algún motivo el html tuviese espacios en blanco, lo dejamos exacto con los valores del enunciado)
-        // reforzar que los textos contengan los datos personales exactos (aunque ya están en el HTML estático)
-        // pero garantizamos que si el usuario edita y recarga, los cambios se mantienen? 
-        // para persistencia local opcional (extra) NO es requisito obligatorio, pero añadiremos una pequeña mejora: 
-        // guardar en localStorage al salir del modo edición o al cambiar? opcional, pero para mejor UX sin servidor.
-        // dado que el enunciado no requiere persistencia, pero por experiencia al editar y recargar página los cambios se pierden.
-        // Añadimos un botón guardar opcional pero no interfiere, pero puede ser útil: botón guardar estado en localStorage.
-        // lo haremos muy sutil: agregamos un botón en la toolbar "💾 Guardar cambios" y "Restaurar"
-        const saveBtn = document.createElement('button');
-        saveBtn.textContent = '💾 GUARDAR TEXTO';
-        saveBtn.className = 'btn-wire';
-        saveBtn.style.marginLeft = '8px';
-        const loadBtn = document.createElement('button');
-        loadBtn.textContent = '⟳ CARGAR GUARDADO';
-        loadBtn.className = 'btn-wire';
-        const toolbarDiv = document.querySelector('.edit-toolbar div:first-child');
-        toolbarDiv.appendChild(saveBtn);
-        toolbarDiv.appendChild(loadBtn);
-        
-        // función para guardar textos e imagen? simplificado: textos guardados en localStorage, imagen solo puede ser por archivo, no persistencia debido a seguridad URL blob, pero podemos guardar dataURL de imagen opcional.
-        // Para imagen almacenar si el usuario quiere persistencia al recargar: guardar en localStorage la dataURL? pero puede ser pesado. mejor guardar opcional: solo texto.
-        function saveToLocal() {
-            const data = {
-                name: nameSpan.innerText,
-                pronouns: pronounsSpan.innerText,
-                birthday: birthdaySpan.innerText,
-                city: citySpan.innerText,
-                activity: activitySpan.innerText,
-                bio: bioSpan.innerText,
-                extra: extraSpan.innerText
-            };
-            localStorage.setItem('samProfileData', JSON.stringify(data));
-            alert('✔ Texto guardado en el navegador (recarga mantiene texto)');
-        }
-        
-        function loadFromLocal() {
-            const saved = localStorage.getItem('samProfileData');
-            if(saved) {
-                const data = JSON.parse(saved);
-                nameSpan.innerText = data.name;
-                pronounsSpan.innerText = data.pronouns;
-                birthdaySpan.innerText = data.birthday;
-                citySpan.innerText = data.city;
-                activitySpan.innerText = data.activity;
-                bioSpan.innerText = data.bio;
-                extraSpan.innerText = data.extra;
-                alert('✓ Texto restaurado desde almacenamiento local');
-            } else {
-                alert('No hay datos guardados previamente');
-            }
-        }
-        
-        saveBtn.addEventListener('click', saveToLocal);
-        loadBtn.addEventListener('click', loadFromLocal);
-        
-        // Cargar datos si existen al iniciar (opcional pero mejora)
-        (function autoLoad() {
-            const saved = localStorage.getItem('samProfileData');
-            if(saved) {
-                const data = JSON.parse(saved);
-                nameSpan.innerText = data.name;
-                pronounsSpan.innerText = data.pronouns;
-                birthdaySpan.innerText = data.birthday;
-                citySpan.innerText = data.city;
-                activitySpan.innerText = data.activity;
-                bioSpan.innerText = data.bio;
-                extraSpan.innerText = data.extra;
-            }
-        })();
-        
-        // Restaurar silueta si no hay imagen almacenada (y evitar que el wire se oculte por error)
-        // Si por algún motivo el usuario recarga y se guarda foto? omitimos; la imagen se pierde por seguridad, pero se puede volver a subir.
-        // doble click en frame restablece foto.
-        
-        // Detalles adicionales: permitir que la línea adicional se vea siempre (extra-line) ya está.
-        // Establecemos comportamiento responsive y bordes manteniendo integridad.
-        // También agregamos un tooltip para el doble click de reset de foto
-        const frameHint = document.createElement('div');
-        frameHint.textContent = '✧ doble clic para resetear foto ✧';
-        frameHint.style.position = 'absolute';
-        frameHint.style.bottom = '-20px';
-        frameHint.style.right = '8px';
-        frameHint.style.fontSize = '0.55rem';
-        frameHint.style.color = '#39FF14';
-        frameHint.style.background = 'black';
-        frameHint.style.padding = '2px 4px';
-        frameHint.style.border = '0.5px solid white';
-        frameHint.style.fontFamily = 'monospace';
-        frameHint.style.whiteSpace = 'nowrap';
-        const photoFrameParent = document.querySelector('.photo-frame');
-        photoFrameParent.style.position = 'relative';
-        photoFrameParent.appendChild(frameHint);
-        
-        // pequeños ajustes: asegurar que la silueta no desaparezca si no hay imagen.
-        if(userImg.src === "" || !userImg.classList.contains('active-img')) {
-            wireSilhouetteDiv.style.display = 'flex';
-            wireSilhouetteDiv.classList.remove('hide-silhouette');
-            userImg.style.display = 'none';
-        }
-        
-        // Si se sube imagen se oculta wireframe, perfecto.
-        // también añadimos opción para que los pronombres se vean limpios
-        // arreglar un posible bug de borde de la foto
-        console.log("✅ one-pager wireframe vib-ribbon lista - Edita textos e imagen");
-    })();
+
+/* =========================================================
+   PARTÍCULAS
+========================================================= */
+
+const particlesContainer = document.getElementById('particles');
+
+for(let i=0;i<60;i++){
+
+  const p = document.createElement('div');
+  p.classList.add('particle');
+
+  p.style.left = Math.random()*100 + 'vw';
+  p.style.top = Math.random()*100 + 'vh';
+
+  p.style.opacity = Math.random()*0.6;
+
+  p.style.animationDuration = (10 + Math.random()*20) + 's';
+  p.style.animationDelay = (-Math.random()*20) + 's';
+
+  p.style.width = (2 + Math.random()*10) + 'px';
+
+  particlesContainer.appendChild(p);
+}
+
+/* =========================================================
+   SUBIR FOTO
+========================================================= */
+
+const photoInput = document.getElementById('photoInput');
+const profileImage = document.getElementById('profileImage');
+const wireAvatar = document.getElementById('wireAvatar');
+
+photoInput.addEventListener('change', function(e){
+
+  const file = e.target.files[0];
+
+  if(!file) return;
+
+  const reader = new FileReader();
+
+  reader.onload = function(event){
+
+    const imageData = event.target.result;
+
+    profileImage.src = imageData;
+    profileImage.style.display = 'block';
+
+    wireAvatar.style.display = 'none';
+
+    localStorage.setItem('samProfileImage', imageData);
+  };
+
+  reader.readAsDataURL(file);
+});
+
+/* =========================================================
+   CARGAR FOTO GUARDADA
+========================================================= */
+
+const savedImage = localStorage.getItem('samProfileImage');
+
+if(savedImage){
+  profileImage.src = savedImage;
+  profileImage.style.display = 'block';
+  wireAvatar.style.display = 'none';
+}
+
+/* =========================================================
+   AUTOGUARDADO TEXTO
+========================================================= */
+
+const editables = document.querySelectorAll('.editable');
+
+editables.forEach(el => {
+
+  const key = el.dataset.key;
+
+  // Cargar
+  const saved = localStorage.getItem('editable_' + key);
+
+  if(saved){
+    el.innerHTML = saved;
+  }
+
+  // Guardar
+  el.addEventListener('input', () => {
+    localStorage.setItem('editable_' + key, el.innerHTML);
+  });
+
+});
+
+/* =========================================================
+   SELECTORES DE COLOR
+========================================================= */
+
+const root = document.documentElement;
+
+function setAccent(variable, value){
+  root.style.setProperty(variable, value);
+  localStorage.setItem(variable, value);
+}
+
+const accentInputs = [
+  ['accent1', '--accent1'],
+  ['accent2', '--accent2'],
+  ['accent3', '--accent3']
+];
+
+accentInputs.forEach(([id, variable]) => {
+
+  const input = document.getElementById(id);
+
+  // cargar
+  const saved = localStorage.getItem(variable);
+
+  if(saved){
+    input.value = saved;
+    root.style.setProperty(variable, saved);
+  }
+
+  input.addEventListener('input', (e)=>{
+    setAccent(variable, e.target.value);
+  });
+
+});
+
+/* =========================================================
+   EFECTO CRT RANDOM
+========================================================= */
+
+setInterval(()=>{
+
+  document.body.style.filter =
+    `brightness(${0.98 + Math.random()*0.04})`;
+
+},120);
+
+/* =========================================================
+   MICRO GLITCH RANDOM
+========================================================= */
+
+setInterval(()=>{
+
+  const title = document.querySelector('.glitch');
+
+  title.style.textShadow = `
+    ${Math.random()*4-2}px 0 var(--accent2),
+    ${Math.random()*-4+2}px 0 var(--accent3)
+  `;
+
+},100);
+
 </script>
+
 </body>
 </html>
