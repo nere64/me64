@@ -3,12 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>SAM · One-Pager Vib-Ribbon | Editable + PNG/GIF + GitHub Pages</title>
-    <!-- Librerías para exportar PNG y GIF -->
-    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js"></script>
+    <title>SAM · WIREFRAME // 1999</title>
+    <!-- Fuentes retro/mono -->
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
-        /* ---------- RESET Y BASE VIB-RIBBON / WIREFRAME ---------- */
         * {
             margin: 0;
             padding: 0;
@@ -16,427 +14,438 @@
         }
 
         body {
-            background-color: #000000;
-            font-family: 'Courier New', 'Fira Code', 'VT323', 'Source Code Pro', monospace;
-            font-weight: 400;
-            line-height: 1.4;
+            background-color: #000000;   /* black puro */
+            font-family: 'Space Mono', 'Courier New', monospace;
             color: #FFFFFF;
-            padding: 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
+            line-height: 1.4;
+            padding: 2rem 1.5rem;
         }
 
-        /* contenedor principal one-pager */
-        .one-pager {
+        /* estructura wireframe angular */
+        .container {
             max-width: 1300px;
-            width: 100%;
             margin: 0 auto;
-            background: #000000;
-            border: 1.5px solid #FFFFFF;
-            border-radius: 0px;
-            padding: 2rem;
-            box-shadow: 0 0 0 1px #000000, 0 0 0 3px #FFFFFF;
+            border: 1px solid #FFFFFF;   /* borde blanco fino general */
+            padding: 2rem 1.8rem;
             position: relative;
-            transition: all 0.2s;
+            background: transparent;
         }
 
-        /* decoración wireframe angular */
-        .one-pager::before {
-            content: "";
+        /* líneas decorativas tipo PS1 / Vib-Ribbon */
+        .corner-deco {
             position: absolute;
-            top: 12px;
-            left: 12px;
-            width: 40px;
-            height: 40px;
-            border-top: 2px solid var(--accent-neon, #39ff14);
-            border-left: 2px solid var(--accent-neon, #39ff14);
+            width: 24px;
+            height: 24px;
+            border-color: #39FF14;   /* verde neón por defecto, se puede cambiar */
+            border-style: solid;
+            border-width: 0;
             pointer-events: none;
+            z-index: 2;
         }
-        .one-pager::after {
-            content: "";
+        .tl {
+            top: -1px;
+            left: -1px;
+            border-top-width: 2px;
+            border-left-width: 2px;
+        }
+        .tr {
+            top: -1px;
+            right: -1px;
+            border-top-width: 2px;
+            border-right-width: 2px;
+        }
+        .bl {
+            bottom: -1px;
+            left: -1px;
+            border-bottom-width: 2px;
+            border-left-width: 2px;
+        }
+        .br {
+            bottom: -1px;
+            right: -1px;
+            border-bottom-width: 2px;
+            border-right-width: 2px;
+        }
+
+        /* rejilla wireframe sutil (líneas quebradas) */
+        .wire-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1px;
+            background: transparent;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.18;
+            z-index: 0;
+        }
+        .wire-grid span {
+            border-right: 1px dashed #39FF14;
+            border-bottom: 1px dashed #FF00FF;
+        }
+
+        /* layout principal */
+        .hero-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            margin-bottom: 2.8rem;
+            border-bottom: 1px solid #FFFFFF;
+            padding-bottom: 2rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* contenedor de imagen wireframe */
+        .photo-frame {
+            flex: 1.2;
+            min-width: 220px;
+            border: 1px solid #FFFFFF;
+            background: #000000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            aspect-ratio: 1 / 1.1;
+            position: relative;
+        }
+
+        .wire-silhouette {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* SVG wireframe humano angular (estilo poligonal) */
+        .avatar-svg {
+            width: 85%;
+            max-width: 220px;
+            stroke: #FFFFFF;
+            stroke-width: 1.5;
+            fill: none;
+        }
+
+        .avatar-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            display: none; /* oculto hasta que se suba imagen */
+        }
+
+        .photo-frame img.active-img {
+            display: block;
+        }
+
+        .photo-frame .wire-silhouette.hide-silhouette {
+            display: none;
+        }
+
+        /* controles de imagen */
+        .img-upload-btn {
             position: absolute;
             bottom: 12px;
             right: 12px;
-            width: 40px;
-            height: 40px;
-            border-bottom: 2px solid var(--accent-magenta, #ff00cc);
-            border-right: 2px solid var(--accent-magenta, #ff00cc);
-            pointer-events: none;
-        }
-
-        /* grid responsiva */
-        .dashboard {
-            display: grid;
-            grid-template-columns: 1fr 1.1fr;
-            gap: 2rem;
-            align-items: start;
-        }
-
-        /* foto contenedor wireframe */
-        .foto-container {
-            border: 2px solid #FFFFFF;
-            background: #0a0a0a;
-            padding: 1rem;
-            position: relative;
-        }
-        .foto-container::before {
-            content: "";
-            position: absolute;
-            top: -8px;
-            left: -8px;
-            width: 20px;
-            height: 20px;
-            border-top: 2px solid var(--accent-cyan, #00ffff);
-            border-left: 2px solid var(--accent-cyan, #00ffff);
-        }
-        .foto-wrapper {
-            width: 100%;
-            background: #010101;
-            border: 1px solid #FFFFFF;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 320px;
-            overflow: hidden;
-        }
-        .foto-perfil {
-            display: block;
-            width: 100%;
-            height: auto;
-            object-fit: cover;
-            background: #111;
-            aspect-ratio: 1 / 1;
-        }
-        .edit-hint-photo {
+            background: #000000;
+            border: 1px solid #39FF14;
+            color: #39FF14;
+            font-family: 'Space Mono', monospace;
             font-size: 0.7rem;
-            color: #aaaaaa;
-            text-align: center;
-            margin-top: 12px;
-            border-top: 1px dashed var(--accent-neon, #39ff14);
-            padding-top: 8px;
-        }
-        .photo-upload-btn {
-            background: #000;
-            border: 1px solid var(--accent-neon, #39ff14);
-            font-family: monospace;
-            font-size: 0.7rem;
-            padding: 6px 12px;
+            padding: 4px 8px;
             cursor: pointer;
-            color: var(--accent-neon, #39ff14);
-            transition: 0.2s;
-            text-transform: uppercase;
-            margin-top: 8px;
-            width: 100%;
+            z-index: 5;
+            transition: 0.1s linear;
         }
-        .photo-upload-btn:hover {
-            background: #111;
-            border-color: #ffffff;
-            color: white;
-        }
-        .photo-status {
-            font-size: 0.65rem;
-            color: #39ff14;
-            text-align: center;
-            margin-top: 6px;
+        .img-upload-btn:hover {
+            background: #39FF14;
+            color: black;
+            border-color: white;
         }
 
-        /* info panel */
+        /* info personal */
         .info-panel {
+            flex: 2;
+            min-width: 260px;
             display: flex;
             flex-direction: column;
-            gap: 1.4rem;
+            gap: 1rem;
         }
-        .data-card {
-            border-left: 3px solid #FFFFFF;
-            padding-left: 1rem;
-        }
-        .nombre-linea {
+
+        .name-row {
             font-size: 3rem;
             font-weight: 700;
-            text-transform: uppercase;
-            background: #000000;
-            line-height: 1;
-            text-shadow: 2px 2px 0px var(--accent-neon, #39ff14);
-            display: inline-block;
+            letter-spacing: -1px;
+            border-left: 3px solid #39FF14;
+            padding-left: 0.8rem;
+            font-family: 'Press Start 2P', 'Courier New', monospace;
+            word-break: break-word;
         }
-        .badge-pronombres {
-            font-size: 1rem;
-            background: #000;
-            border: 1px solid #FFFFFF;
-            display: inline-block;
-            padding: 0.2rem 0.7rem;
-            margin-left: 0.8rem;
-            vertical-align: middle;
-        }
-        .fila-mini {
+
+        .pronouns, .birth-city {
             display: flex;
             flex-wrap: wrap;
-            gap: 1.2rem;
-            margin: 0.8rem 0 0.2rem;
+            gap: 1rem;
+            font-size: 0.9rem;
+            border-bottom: 1px dashed #FFFFFF;
+            padding-bottom: 0.5rem;
         }
-        .attr-label {
+
+        .data-line {
+            background: transparent;
+            border: 1px dotted #FF00FF;
+            padding: 0.2rem 0.5rem;
+            display: inline-block;
+        }
+
+        .activity {
+            background: #000000;
+            border-left: 3px solid cyan;
+            padding: 0.5rem 0 0.5rem 0.8rem;
             font-weight: bold;
-            color: var(--accent-cyan, #00ffff);
-            text-transform: uppercase;
         }
-        .actividad-input {
-            background: #0a0a0a;
+
+        /* sobre mi + adicional */
+        .bio-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 2rem 0;
+            border-top: 1px solid #FFFFFF;
+            padding-top: 1.8rem;
+        }
+
+        .bio-card, .extra-card {
             border: 1px solid #FFFFFF;
-            font-family: monospace;
-            font-size: 1rem;
-            color: var(--accent-neon, #39ff14);
-            padding: 8px 12px;
-            width: 100%;
+            padding: 1.2rem;
+            position: relative;
+        }
+
+        .bio-card h3, .extra-card h3 {
+            font-family: 'Press Start 2P', monospace;
+            font-size: 0.8rem;
+            margin-bottom: 0.8rem;
+            letter-spacing: 1px;
+            color: #39FF14;
+        }
+
+        .editable-text {
             outline: none;
-            margin-top: 6px;
+            transition: all 0.05s ease;
+            word-break: break-word;
         }
-        .actividad-input:focus {
-            border-color: var(--accent-magenta, #ff00cc);
+        .editable-text:focus {
+            border: 1px solid #39FF14;
+            background-color: #111;
+            padding: 2px;
         }
-        .sobre-mi-box {
+
+        /* línea adicional con estilo */
+        .extra-line {
+            margin-top: 1rem;
+            font-style: italic;
+            border-top: 1px dashed #FF00FF;
+            padding-top: 0.5rem;
+        }
+
+        /* modo edición: botones y barra */
+        .edit-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.8rem;
+            gap: 1rem;
+            border-bottom: 1px solid #FFFFFF;
+            padding-bottom: 0.8rem;
+        }
+
+        .btn-wire {
             background: #000000;
             border: 1px solid #FFFFFF;
-            padding: 0.8rem;
-            margin: 0.4rem 0;
-        }
-        .sobre-mi-box p {
-            font-family: monospace;
-            font-size: 0.9rem;
-            line-height: 1.5;
-            color: #ffffff;
-            white-space: pre-wrap;
-            outline: none;
-        }
-        .sobre-mi-box p:focus {
-            border-left: 2px solid var(--accent-neon, #39ff14);
-            padding-left: 6px;
-        }
-        .linea-adicional {
-            margin-top: 12px;
-            font-size: 0.9rem;
-            border-top: 1px dashed var(--accent-magenta, #ff00cc);
-            padding-top: 8px;
-        }
-        .wire-accents {
-            display: flex;
-            gap: 12px;
-            margin-top: 12px;
-        }
-        .wire-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent-neon, #39ff14);
-            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
-        }
-        .wire-line {
-            height: 2px;
-            width: 40px;
-            background: var(--accent-cyan, #00ffff);
-        }
-
-        /* Barra de herramientas */
-        .toolbar {
-            margin-top: 2rem;
-            border-top: 1px solid #ffffff30;
-            padding-top: 1.2rem;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            justify-content: center;
-            align-items: center;
-            max-width: 1300px;
-            width: 100%;
-        }
-        .tool-btn {
-            background: #000;
-            border: 1px solid #fff;
-            font-family: monospace;
-            padding: 8px 14px;
-            color: white;
+            color: #FFFFFF;
+            font-family: 'Space Mono', monospace;
+            padding: 6px 14px;
             cursor: pointer;
-            transition: 0.2s;
             font-size: 0.8rem;
+            transition: 0.1s linear;
         }
-        .tool-btn:hover {
-            background: #222;
-            border-color: var(--accent-neon, #39ff14);
-            color: var(--accent-neon, #39ff14);
-        }
-        .color-picker-group {
-            display: flex;
-            gap: 12px;
-            align-items: center;
-            flex-wrap: wrap;
-            background: #0a0a0a;
-            padding: 5px 12px;
-            border: 1px solid #333;
-        }
-        .color-label {
-            font-size: 0.7rem;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .status-msg {
-            color: var(--accent-neon, #39ff14);
-            font-size: 0.7rem;
-            font-family: monospace;
-            background: #000;
-            padding: 4px 8px;
-            border: 1px solid #333;
+        .btn-wire:hover {
+            background: #FFFFFF;
+            color: #000000;
         }
 
-        /* responsive móvil */
-        @media (max-width: 780px) {
-            .dashboard {
-                grid-template-columns: 1fr;
-                gap: 1.8rem;
-            }
-            .nombre-linea {
-                font-size: 2.2rem;
-            }
-            body {
-                padding: 1rem;
-            }
-            .one-pager {
-                padding: 1.2rem;
-            }
-            .toolbar {
-                gap: 8px;
-            }
-            .tool-btn {
-                padding: 6px 10px;
-                font-size: 0.7rem;
-            }
+        .accent-picker {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+        }
+        .accent-color {
+            width: 28px;
+            height: 28px;
+            border: 1px solid white;
+            cursor: pointer;
+            background-color: #39FF14;
+        }
+        .accent-color.cyan {
+            background-color: #00FFFF;
+        }
+        .accent-color.magenta {
+            background-color: #FF00FF;
+        }
+        .accent-color.green {
+            background-color: #39FF14;
         }
 
-        :root {
-            --bg-color: #000000;
-            --text-main: #FFFFFF;
-            --accent-neon: #39ff14;
-            --accent-cyan: #00ffff;
-            --accent-magenta: #ff00cc;
+        /* responsivo */
+        @media (max-width: 760px) {
+            body { padding: 1rem; }
+            .container { padding: 1rem; }
+            .bio-section { grid-template-columns: 1fr; }
+            .name-row { font-size: 1.9rem; }
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2rem;
+            font-size: 0.65rem;
+            border-top: 1px solid #FFFFFF;
+            padding-top: 1rem;
+            opacity: 0.7;
+        }
+        input, button, .btn-wire {
+            background: black;
+            color: white;
+        }
+        .hidden-file {
+            display: none;
+        }
+        [contenteditable="true"] {
+            cursor: text;
         }
     </style>
 </head>
 <body>
+<div class="container">
+    <!-- esquinas decorativas retro con acento neón -->
+    <div class="corner-deco tl" id="decoTL"></div>
+    <div class="corner-deco tr" id="decoTR"></div>
+    <div class="corner-deco bl" id="decoBL"></div>
+    <div class="corner-deco br" id="decoBR"></div>
 
-<div class="one-pager" id="onePagerToCapture">
-    <div class="dashboard">
-        <!-- COLUMNA FOTO: carga desde /imagenes/user (user.png o user.jpg) -->
-        <div class="foto-container">
-            <div class="foto-wrapper">
-                <img id="fotoPersonal" class="foto-perfil" 
-                     src="/imagenes/user.png" 
-                     alt="Foto personal - reemplazar en /imagenes/user.png"
-                     onerror="this.onerror=null; this.src='/imagenes/user.jpg'; console.log('fallback a user.jpg'); if(this.src.indexOf('user.jpg')!==-1 && this.naturalHeight===0) this.src='https://placekitten.com/500/500?image=5';">
+    <div class="edit-toolbar">
+        <div>
+            <button class="btn-wire" id="enableEditModeBtn">✎ EDITAR TEXTO</button>
+            <button class="btn-wire" id="disableEditModeBtn" style="margin-left: 8px;">🔒 BLOQUEAR</button>
+        </div>
+        <div class="accent-picker">
+            <span style="font-size:0.7rem;">ACENTO:</span>
+            <div class="accent-color green" data-color="#39FF14"></div>
+            <div class="accent-color cyan" data-color="#00FFFF"></div>
+            <div class="accent-color magenta" data-color="#FF00FF"></div>
+        </div>
+    </div>
+
+    <!-- Hero: foto + info principal -->
+    <div class="hero-section">
+        <div class="photo-frame" id="photoFrame">
+            <div class="wire-silhouette" id="wireSilhouette">
+                <!-- SVG wireframe humano geométrico, angular, estilo PS1 wireframe -->
+                <svg class="avatar-svg" viewBox="0 0 200 240" xmlns="http://www.w3.org/2000/svg">
+                    <polyline points="100,30 130,70 115,100 100,90 85,100 70,70 100,30" stroke="white" stroke-width="1.5" fill="none"/>
+                    <line x1="100" y1="90" x2="100" y2="140" stroke="white" stroke-width="1.5"/>
+                    <polyline points="100,140 65,190 80,200 100,170 120,200 135,190 100,140" stroke="white" stroke-width="1.5" fill="none"/>
+                    <line x1="100" y1="110" x2="75" y2="135" stroke="white" stroke-width="1.2"/>
+                    <line x1="100" y1="110" x2="125" y2="135" stroke="white" stroke-width="1.2"/>
+                    <circle cx="86" cy="78" r="3" stroke="#FF00FF" stroke-width="1.2" fill="none"/>
+                    <circle cx="114" cy="78" r="3" stroke="#FF00FF" stroke-width="1.2" fill="none"/>
+                </svg>
             </div>
-            <button id="btnSubirFoto" class="photo-upload-btn">📁 SUBIR Y GUARDAR EN /imagenes/user</button>
-            <div class="edit-hint-photo">⚡ foto leída desde /imagenes/user.png o .jpg (GitHub Pages)</div>
-            <div id="photoStatus" class="photo-status"></div>
+            <img id="userImage" class="avatar-img" src="" alt="foto personal" style="display:none;">
+            <input type="file" id="imageUploader" accept="image/*" class="hidden-file">
+            <button class="img-upload-btn" id="uploadImageBtn">📁 SUBIR FOTO</button>
         </div>
 
-        <!-- COLUMNA INFO EDITABLE -->
         <div class="info-panel">
-            <div class="data-card">
-                <div>
-                    <span class="nombre-linea" id="nombreEditable" contenteditable="true">SAM</span>
-                    <span class="badge-pronombres" id="pronombresEditable" contenteditable="true">El / ella / elle</span>
-                </div>
-                <div class="fila-mini">
-                    <div><span class="attr-label">🎂 CUMPLEAÑOS</span> <span id="cumpleanosEditable" contenteditable="true">18 de junio</span></div>
-                    <div><span class="attr-label">📍 CIUDAD</span> <span id="ciudadEditable" contenteditable="true">Quilpué</span></div>
-                </div>
+            <div class="name-row editable-text" contenteditable="false" id="editableName">SAM</div>
+            <div class="pronouns">
+                <span class="data-line editable-text" contenteditable="false" id="editablePronouns">El / ella / elle</span>
+                <span class="data-line editable-text" contenteditable="false" id="editableBirthday">🎂 18 de junio</span>
+                <span class="data-line editable-text" contenteditable="false" id="editableCity">📍 Quilpué</span>
             </div>
-            <div class="data-card">
-                <div class="attr-label">⚡ PRINCIPAL ACTIVIDAD</div>
-                <input type="text" id="actividadInput" class="actividad-input" value="Estudiante / Creador">
-                <div class="wire-accents"><div class="wire-dot"></div><div class="wire-line"></div><div class="wire-dot" style="background:var(--accent-magenta)"></div></div>
-            </div>
-            <div class="data-card">
-                <div class="attr-label">📝 SOBRE MÍ</div>
-                <div class="sobre-mi-box">
-                    <p id="sobreMiTexto" contenteditable="true">*Mis pasatiempos son hacer animaciones tontas en Blender, jugar, ver casos de internet y ahora ando aprendiendo a hacer juegos en Pico-8*</p>
-                </div>
-                <div class="linea-adicional" id="lineaAdicionalEditable" contenteditable="true">🧠 Autista y TDAH</div>
+            <div class="activity">
+                <span class="editable-text" contenteditable="false" id="editableActivity">⚡ Principal actividad: Estudiante / Creador</span>
             </div>
         </div>
     </div>
-</div>
 
-<!-- Barra de herramientas + exportaciones -->
-<div class="toolbar">
-    <div class="color-picker-group">
-        <span class="color-label">🟢 Neón: <input type="color" id="neonColorPicker" value="#39ff14"></span>
-        <span class="color-label">🔵 Cian: <input type="color" id="cyanColorPicker" value="#00ffff"></span>
-        <span class="color-label">🟣 Magenta: <input type="color" id="magentaColorPicker" value="#ff00cc"></span>
+    <!-- biografía y línea extra -->
+    <div class="bio-section">
+        <div class="bio-card">
+            <h3>⛓️ SOBRE MÍ</h3>
+            <div class="editable-text" contenteditable="false" id="editableBio">
+                Mis pasatiempos son hacer animaciones tontas en Blender, jugar, ver casos de internet y ahora ando aprendiendo a hacer juegos en Pico-8
+            </div>
+        </div>
+        <div class="extra-card">
+            <h3>◢ NEURODIVERGENCIA</h3>
+            <div class="editable-text extra-line" contenteditable="false" id="editableExtra">
+                Autista y TDAH
+            </div>
+        </div>
     </div>
-    <button id="exportPCHorizontalBtn" class="tool-btn">📸 PNG (PC / Horizontal)</button>
-    <button id="exportMobileVerticalBtn" class="tool-btn">📱 PNG (Móvil / Vertical)</button>
-    <button id="exportGifBtn" class="tool-btn">🎬 GIF Animado (wireframe)</button>
-    <div id="statusMsg" class="status-msg">✅ listo</div>
+    <footer>
+        <span style="letter-spacing: 2px;">⚡ WIREFRAME GENERATION [1999] • EDITABLE VISUAL ⚡</span>
+    </footer>
 </div>
 
 <script>
-    (function() {
-        // ---------- 1. COLORES DINÁMICOS ----------
-        const root = document.documentElement;
-        const neonPicker = document.getElementById('neonColorPicker');
-        const cyanPicker = document.getElementById('cyanColorPicker');
-        const magentaPicker = document.getElementById('magentaColorPicker');
+    (function(){
+        // ---------- DOM references ----------
+        // elementos editables principales
+        const nameSpan = document.getElementById('editableName');
+        const pronounsSpan = document.getElementById('editablePronouns');
+        const birthdaySpan = document.getElementById('editableBirthday');
+        const citySpan = document.getElementById('editableCity');
+        const activitySpan = document.getElementById('editableActivity');
+        const bioSpan = document.getElementById('editableBio');
+        const extraSpan = document.getElementById('editableExtra');
         
-        function updateColors() {
-            root.style.setProperty('--accent-neon', neonPicker.value);
-            root.style.setProperty('--accent-cyan', cyanPicker.value);
-            root.style.setProperty('--accent-magenta', magentaPicker.value);
-        }
-        neonPicker.addEventListener('input', updateColors);
-        cyanPicker.addEventListener('input', updateColors);
-        magentaPicker.addEventListener('input', updateColors);
+        const allEditable = [nameSpan, pronounsSpan, birthdaySpan, citySpan, activitySpan, bioSpan, extraSpan];
         
-        // ---------- 2. MANEJO DE FOTO: leer desde /imagenes/user.png (o .jpg) y permitir subir/reemplazar ----------
-        const fotoElement = document.getElementById('fotoPersonal');
-        const photoStatus = document.getElementById('photoStatus');
-        const statusMsgDiv = document.getElementById('statusMsg');
+        // botones de modo edición
+        const enableBtn = document.getElementById('enableEditModeBtn');
+        const disableBtn = document.getElementById('disableEditModeBtn');
         
-        function showStatus(msg, isError = false) {
-            statusMsgDiv.innerHTML = isError ? `⚠️ ${msg}` : `✅ ${msg}`;
-            statusMsgDiv.style.color = isError ? '#ff00cc' : '#39ff14';
-            setTimeout(() => {
-                if(statusMsgDiv.innerHTML === `✅ ${msg}` || statusMsgDiv.innerHTML === `⚠️ ${msg}`) {
-                    statusMsgDiv.innerHTML = '✅ listo';
-                    statusMsgDiv.style.color = '#39ff14';
-                }
-            }, 3000);
-        }
-        
-        // Función para guardar la imagen en la carpeta /imagenes como user.png (simulando escritura en GitHub Pages)
-        // En GitHub Pages no se puede escribir directamente en el repositorio desde el frontend, 
-        // pero podemos descargar el archivo para que el usuario lo coloque manualmente en /imagenes/user.png
-        // Esto es lo más cercano al flujo de trabajo real: el usuario sube, descarga y reemplaza en su repo.
-        function saveToImagenesFolder(file, base64Data) {
-            // Determinar extensión: forzamos .png para consistencia
-            const fileName = 'user.png';
-            // Crear enlace de descarga
-            const link = document.createElement('a');
-            link.download = fileName;
-            link.href = base64Data;
-            link.click();
-            showStatus(`Archivo guardado como ${fileName} · Colócalo en /imagenes/ de tu repo`, false);
-            photoStatus.innerHTML = `📁 Descargado: ${fileName} · Reemplaza en /imagenes/`;
-            setTimeout(() => { if(photoStatus.innerHTML.includes('Descargado')) photoStatus.innerHTML = ''; }, 5000);
+        // lógica de edición: activar/desactivar contenteditable
+        function setEditMode(active) {
+            allEditable.forEach(el => {
+                if (el) el.setAttribute('contenteditable', active ? 'true' : 'false');
+            });
+            // feedback visual con borde sutil en focus (ya está en CSS)
+            if(active) {
+                enableBtn.style.border = "1px solid #39FF14";
+                disableBtn.style.border = "1px solid #FFFFFF";
+            } else {
+                enableBtn.style.border = "1px solid #FFFFFF";
+                disableBtn.style.border = "1px solid #FFFFFF";
+                // blur en todos
+                allEditable.forEach(el => el && el.blur());
+            }
         }
         
-        // Subir foto: leer archivo, actualizar vista y descargar para reemplazar en /imagenes/user.png
-        const btnSubir = document.getElementById('btnSubirFoto');
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = 'image/jpeg, image/png, image/webp, image/gif';
+        enableBtn.addEventListener('click', () => setEditMode(true));
+        disableBtn.addEventListener('click', () => setEditMode(false));
         
-        btnSubir.addEventListener('click', () => {
+        // ---------- EDITAR IMAGEN (subida) ----------
+        const uploadBtn = document.getElementById('uploadImageBtn');
+        const fileInput = document.getElementById('imageUploader');
+        const userImg = document.getElementById('userImage');
+        const wireSilhouetteDiv = document.getElementById('wireSilhouette');
+        
+        uploadBtn.addEventListener('click', () => {
             fileInput.click();
         });
         
@@ -445,196 +454,199 @@
             if (file && file.type.startsWith('image/')) {
                 const reader = new FileReader();
                 reader.onload = function(e) {
-                    const base64 = e.target.result;
-                    fotoElement.src = base64;
-                    // Guardar como user.png para que el usuario lo ponga en /imagenes/
-                    saveToImagenesFolder(file, base64);
-                    // Mostrar mensaje adicional
-                    photoStatus.innerHTML = '🖼️ Foto actualizada (recuerda reemplazar en /imagenes/user.png)';
-                    setTimeout(() => {
-                        if(photoStatus.innerHTML.includes('actualizada')) photoStatus.innerHTML = '';
-                    }, 4000);
+                    userImg.src = e.target.result;
+                    userImg.classList.add('active-img');
+                    userImg.style.display = 'block';
+                    // ocultar silueta wireframe
+                    wireSilhouetteDiv.classList.add('hide-silhouette');
+                    wireSilhouetteDiv.style.display = 'none';
                 };
                 reader.readAsDataURL(file);
-            } else {
-                showStatus("Archivo no válido", true);
+            } else if(file) {
+                alert("por favor selecciona una imagen válida (jpg, png, gif)");
             }
         });
         
-        // Doble click para pegar URL externa (alternativa)
-        fotoElement.addEventListener('dblclick', () => {
-            let newUrl = prompt("Pegar URL de imagen externa (no afecta a /imagenes/user.png):", fotoElement.src);
-            if(newUrl && newUrl.trim() !== "") {
-                fotoElement.src = newUrl.trim();
-                showStatus("Imagen externa cargada (no persiste en /imagenes)", false);
-            }
+        // Opcional: reset imagen (opcional, pero se puede dobleclick para resetear la silueta? mejor agregar un botón oculto? 
+        // Para completar, si el usuario hace doble click en el frame, restablece la silueta wireframe.
+        const photoFrameDiv = document.getElementById('photoFrame');
+        photoFrameDiv.addEventListener('dblclick', (e) => {
+            // Restablecer a la silueta wireframe original
+            userImg.style.display = 'none';
+            userImg.classList.remove('active-img');
+            userImg.src = "";
+            wireSilhouetteDiv.classList.remove('hide-silhouette');
+            wireSilhouetteDiv.style.display = 'flex';
+            fileInput.value = '';  // limpiar input
         });
         
-        // Intentar cargar imagen inicial desde /imagenes/user.png con fallback
-        function loadInitialImage() {
-            const img = new Image();
-            img.onload = () => { fotoElement.src = '/imagenes/user.png'; showStatus("Foto cargada desde /imagenes/user.png", false); };
-            img.onerror = () => {
-                const imgJpg = new Image();
-                imgJpg.onload = () => { fotoElement.src = '/imagenes/user.jpg'; showStatus("Foto cargada desde /imagenes/user.jpg", false); };
-                imgJpg.onerror = () => { 
-                    fotoElement.src = 'https://placekitten.com/500/500?image=5';
-                    showStatus("Placeholder: sube una foto para /imagenes/user.png", false);
-                };
-                imgJpg.src = '/imagenes/user.jpg';
-            };
-            img.src = '/imagenes/user.png';
-        }
-        loadInitialImage();
+        // ---------- selector de colores de acento (cambia líneas decorativas, bordes específicos) ----------
+        const accentColors = document.querySelectorAll('.accent-color');
+        const decoTl = document.getElementById('decoTL');
+        const decoTr = document.getElementById('decoTR');
+        const decoBl = document.getElementById('decoBL');
+        const decoBr = document.getElementById('decoBr');
         
-        // ---------- 3. EXPORTACIÓN A PNG (Horizontal y Vertical) ----------
-        async function captureAsPNG(width, height, fileName) {
-            const element = document.getElementById('onePagerToCapture');
-            if (!element) return;
-            showStatus(`Generando ${fileName}...`, false);
-            try {
-                const canvas = await html2canvas(element, {
-                    scale: 2,
-                    backgroundColor: '#000000',
-                    logging: false,
-                    useCORS: true,
-                    allowTaint: false
-                });
-                // Redimensionar si es necesario
-                let finalCanvas = canvas;
-                if (canvas.width !== width || canvas.height !== height) {
-                    finalCanvas = document.createElement('canvas');
-                    finalCanvas.width = width;
-                    finalCanvas.height = height;
-                    const ctx = finalCanvas.getContext('2d');
-                    ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, width, height);
+        // también afectamos a los bordes de acentos (botón upload, h3, etc)
+        function setAccentColor(color) {
+            // esquinas decorativas
+            const corners = [decoTl, decoTr, decoBl, decoBr];
+            corners.forEach(corner => {
+                if(corner) corner.style.borderColor = color;
+            });
+            // cambiar bordes de elementos destacados: upload btn, headings, activity left border etc
+            uploadBtn.style.borderColor = color;
+            const h3tags = document.querySelectorAll('.bio-card h3, .extra-card h3');
+            h3tags.forEach(h3 => h3.style.color = color);
+            const activityDiv = document.querySelector('.activity');
+            if(activityDiv) activityDiv.style.borderLeftColor = color;
+            const nameRowDiv = document.querySelector('.name-row');
+            if(nameRowDiv) nameRowDiv.style.borderLeftColor = color;
+            // líneas de acentos adicionales: pseudo wire grid? no tocar mucho, pero los bordes de los elementos del toolbar
+            const editBtn = document.getElementById('enableEditModeBtn');
+            if(editBtn && document.activeElement !== editBtn) {
+                // solo para resaltar modo edición pero no lo forzamos, mantenemos estética
+            }
+            // cambiar el borde focus de los editables a ese color (opcional)
+            const style = document.createElement('style');
+            style.id = 'dynamicAccentStyle';
+            const oldStyle = document.getElementById('dynamicAccentStyle');
+            if(oldStyle) oldStyle.remove();
+            style.id = 'dynamicAccentStyle';
+            style.textContent = `
+                .editable-text:focus {
+                    border-color: ${color} !important;
+                    outline: none;
                 }
-                const link = document.createElement('a');
-                link.download = fileName;
-                link.href = finalCanvas.toDataURL('image/png');
-                link.click();
-                showStatus(`${fileName} exportado`, false);
-            } catch (err) {
-                console.error(err);
-                showStatus("Error en captura PNG", true);
+                .img-upload-btn:hover {
+                    background-color: ${color};
+                    border-color: white;
+                    color: black;
+                }
+                .btn-wire:hover {
+                    background: ${color};
+                    color: black;
+                    border-color: white;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        accentColors.forEach(swatch => {
+            swatch.addEventListener('click', (e) => {
+                const color = swatch.getAttribute('data-color');
+                if(color) setAccentColor(color);
+            });
+        });
+        
+        // establecer color verde neón por defecto
+        setAccentColor('#39FF14');
+        
+        // ---------- garantizar que los datos iniciales coincidan con la estructura ----------
+        // (si por algún motivo el html tuviese espacios en blanco, lo dejamos exacto con los valores del enunciado)
+        // reforzar que los textos contengan los datos personales exactos (aunque ya están en el HTML estático)
+        // pero garantizamos que si el usuario edita y recarga, los cambios se mantienen? 
+        // para persistencia local opcional (extra) NO es requisito obligatorio, pero añadiremos una pequeña mejora: 
+        // guardar en localStorage al salir del modo edición o al cambiar? opcional, pero para mejor UX sin servidor.
+        // dado que el enunciado no requiere persistencia, pero por experiencia al editar y recargar página los cambios se pierden.
+        // Añadimos un botón guardar opcional pero no interfiere, pero puede ser útil: botón guardar estado en localStorage.
+        // lo haremos muy sutil: agregamos un botón en la toolbar "💾 Guardar cambios" y "Restaurar"
+        const saveBtn = document.createElement('button');
+        saveBtn.textContent = '💾 GUARDAR TEXTO';
+        saveBtn.className = 'btn-wire';
+        saveBtn.style.marginLeft = '8px';
+        const loadBtn = document.createElement('button');
+        loadBtn.textContent = '⟳ CARGAR GUARDADO';
+        loadBtn.className = 'btn-wire';
+        const toolbarDiv = document.querySelector('.edit-toolbar div:first-child');
+        toolbarDiv.appendChild(saveBtn);
+        toolbarDiv.appendChild(loadBtn);
+        
+        // función para guardar textos e imagen? simplificado: textos guardados en localStorage, imagen solo puede ser por archivo, no persistencia debido a seguridad URL blob, pero podemos guardar dataURL de imagen opcional.
+        // Para imagen almacenar si el usuario quiere persistencia al recargar: guardar en localStorage la dataURL? pero puede ser pesado. mejor guardar opcional: solo texto.
+        function saveToLocal() {
+            const data = {
+                name: nameSpan.innerText,
+                pronouns: pronounsSpan.innerText,
+                birthday: birthdaySpan.innerText,
+                city: citySpan.innerText,
+                activity: activitySpan.innerText,
+                bio: bioSpan.innerText,
+                extra: extraSpan.innerText
+            };
+            localStorage.setItem('samProfileData', JSON.stringify(data));
+            alert('✔ Texto guardado en el navegador (recarga mantiene texto)');
+        }
+        
+        function loadFromLocal() {
+            const saved = localStorage.getItem('samProfileData');
+            if(saved) {
+                const data = JSON.parse(saved);
+                nameSpan.innerText = data.name;
+                pronounsSpan.innerText = data.pronouns;
+                birthdaySpan.innerText = data.birthday;
+                citySpan.innerText = data.city;
+                activitySpan.innerText = data.activity;
+                bioSpan.innerText = data.bio;
+                extraSpan.innerText = data.extra;
+                alert('✓ Texto restaurado desde almacenamiento local');
+            } else {
+                alert('No hay datos guardados previamente');
             }
         }
         
-        // PNG horizontal (PC) 1200x800 aprox manteniendo proporción pero fijamos 1200x auto? mejor respetar aspect del contenedor.
-        // Para mantener fidelidad visual: capturamos el contenedor real y exportamos en alta res.
-        document.getElementById('exportPCHorizontalBtn').addEventListener('click', () => {
-            captureAsPNG(1200, 0, 'SAM_one_pager_horizontal.png'); // height 0 = mantiene proporción original
-        });
-        document.getElementById('exportMobileVerticalBtn').addEventListener('click', () => {
-            captureAsPNG(450, 0, 'SAM_one_pager_vertical.png');
-        });
+        saveBtn.addEventListener('click', saveToLocal);
+        loadBtn.addEventListener('click', loadFromLocal);
         
-        // Ajuste opcional: para captura exacta con altura dinámica, html2canvas respeta dimensiones, pasamos width únicamente.
-        // Mejoramos la función para forzar tamaño custom:
-        async function captureFixed(element, width, height, fileName) {
-            const canvas = await html2canvas(element, { scale: 2, backgroundColor: '#000000', useCORS: true });
-            const finalCanvas = document.createElement('canvas');
-            finalCanvas.width = width;
-            finalCanvas.height = height;
-            const ctx = finalCanvas.getContext('2d');
-            ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, width, height);
-            const link = document.createElement('a');
-            link.download = fileName;
-            link.href = finalCanvas.toDataURL('image/png');
-            link.click();
-        }
-        
-        // Reemplazar handlers
-        document.getElementById('exportPCHorizontalBtn').onclick = async () => {
-            const el = document.getElementById('onePagerToCapture');
-            showStatus("Exportando horizontal (1200x900)...");
-            await captureFixed(el, 1200, 900, 'SAM_horizontal.png');
-            showStatus("Horizontal listo");
-        };
-        document.getElementById('exportMobileVerticalBtn').onclick = async () => {
-            const el = document.getElementById('onePagerToCapture');
-            showStatus("Exportando vertical (450x750)...");
-            await captureFixed(el, 450, 750, 'SAM_vertical.png');
-            showStatus("Vertical listo");
-        };
-        
-        // ---------- 4. EXPORTAR GIF ANIMADO (wireframe animado: líneas y acentos parpadeantes) ----------
-        // Creamos un GIF a partir de múltiples capturas simulando animación de wireframe (cambios en colores/bordes)
-        let gifWorkerUrl = 'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js';
-        GIF.workers = 2;
-        GIF.workerScript = gifWorkerUrl;
-        
-        document.getElementById('exportGifBtn').addEventListener('click', async () => {
-            showStatus("🎬 Generando GIF animado (espera unos segundos)...", false);
-            const element = document.getElementById('onePagerToCapture');
-            const gif = new GIF({
-                workers: 2,
-                quality: 10,
-                width: 500,
-                height: 500,
-                workerScript: gifWorkerUrl
-            });
-            
-            // Guardamos estilos originales
-            const originalNeon = root.style.getPropertyValue('--accent-neon') || '#39ff14';
-            const originalCyan = root.style.getPropertyValue('--accent-cyan') || '#00ffff';
-            const originalMagenta = root.style.getPropertyValue('--accent-magenta') || '#ff00cc';
-            
-            // frames: variaciones de colores y parpadeo de bordes para simular Vib-Ribbon
-            const variations = [
-                { neon: '#39ff14', cyan: '#00ffff', magenta: '#ff00cc', delay: 300 },
-                { neon: '#ff00cc', cyan: '#39ff14', magenta: '#00ffff', delay: 300 },
-                { neon: '#00ffff', cyan: '#ff00cc', magenta: '#39ff14', delay: 300 },
-                { neon: '#ffffff', cyan: '#39ff14', magenta: '#ff00cc', delay: 300 },
-                { neon: '#39ff14', cyan: '#ffffff', magenta: '#00ffff', delay: 300 },
-                { neon: originalNeon, cyan: originalCyan, magenta: originalMagenta, delay: 300 }
-            ];
-            
-            for (let i = 0; i < variations.length; i++) {
-                const v = variations[i];
-                root.style.setProperty('--accent-neon', v.neon);
-                root.style.setProperty('--accent-cyan', v.cyan);
-                root.style.setProperty('--accent-magenta', v.magenta);
-                // esperar a que se apliquen los cambios visuales
-                await new Promise(r => setTimeout(r, 80));
-                const canvas = await html2canvas(element, { scale: 1.5, backgroundColor: '#000000', useCORS: true });
-                const resizedCanvas = document.createElement('canvas');
-                resizedCanvas.width = 500;
-                resizedCanvas.height = 500;
-                const ctx = resizedCanvas.getContext('2d');
-                ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 500, 500);
-                gif.addFrame(resizedCanvas, { delay: v.delay, copy: true });
+        // Cargar datos si existen al iniciar (opcional pero mejora)
+        (function autoLoad() {
+            const saved = localStorage.getItem('samProfileData');
+            if(saved) {
+                const data = JSON.parse(saved);
+                nameSpan.innerText = data.name;
+                pronounsSpan.innerText = data.pronouns;
+                birthdaySpan.innerText = data.birthday;
+                citySpan.innerText = data.city;
+                activitySpan.innerText = data.activity;
+                bioSpan.innerText = data.bio;
+                extraSpan.innerText = data.extra;
             }
-            
-            // restaurar colores finales
-            root.style.setProperty('--accent-neon', originalNeon);
-            root.style.setProperty('--accent-cyan', originalCyan);
-            root.style.setProperty('--accent-magenta', originalMagenta);
-            
-            gif.on('finished', function(blob) {
-                const link = document.createElement('a');
-                link.download = 'SAM_vibribbon_animation.gif';
-                link.href = URL.createObjectURL(blob);
-                link.click();
-                showStatus("✅ GIF generado: SAM_vibribbon_animation.gif", false);
-            });
-            
-            gif.render();
-        });
+        })();
         
-        // Sincronizar colores pickers con valores actuales al inicio
-        function syncPickers() {
-            const neon = getComputedStyle(root).getPropertyValue('--accent-neon').trim();
-            const cyan = getComputedStyle(root).getPropertyValue('--accent-cyan').trim();
-            const magenta = getComputedStyle(root).getPropertyValue('--accent-magenta').trim();
-            if(neon) neonPicker.value = neon;
-            if(cyan) cyanPicker.value = cyan;
-            if(magenta) magentaPicker.value = magenta;
+        // Restaurar silueta si no hay imagen almacenada (y evitar que el wire se oculte por error)
+        // Si por algún motivo el usuario recarga y se guarda foto? omitimos; la imagen se pierde por seguridad, pero se puede volver a subir.
+        // doble click en frame restablece foto.
+        
+        // Detalles adicionales: permitir que la línea adicional se vea siempre (extra-line) ya está.
+        // Establecemos comportamiento responsive y bordes manteniendo integridad.
+        // También agregamos un tooltip para el doble click de reset de foto
+        const frameHint = document.createElement('div');
+        frameHint.textContent = '✧ doble clic para resetear foto ✧';
+        frameHint.style.position = 'absolute';
+        frameHint.style.bottom = '-20px';
+        frameHint.style.right = '8px';
+        frameHint.style.fontSize = '0.55rem';
+        frameHint.style.color = '#39FF14';
+        frameHint.style.background = 'black';
+        frameHint.style.padding = '2px 4px';
+        frameHint.style.border = '0.5px solid white';
+        frameHint.style.fontFamily = 'monospace';
+        frameHint.style.whiteSpace = 'nowrap';
+        const photoFrameParent = document.querySelector('.photo-frame');
+        photoFrameParent.style.position = 'relative';
+        photoFrameParent.appendChild(frameHint);
+        
+        // pequeños ajustes: asegurar que la silueta no desaparezca si no hay imagen.
+        if(userImg.src === "" || !userImg.classList.contains('active-img')) {
+            wireSilhouetteDiv.style.display = 'flex';
+            wireSilhouetteDiv.classList.remove('hide-silhouette');
+            userImg.style.display = 'none';
         }
-        syncPickers();
         
-        // Asegurar que todos los textos contenteditable mantengan estilo
-        console.log("✅ One-pager listo - GitHub Pages compatible - Foto desde /imagenes/user");
+        // Si se sube imagen se oculta wireframe, perfecto.
+        // también añadimos opción para que los pronombres se vean limpios
+        // arreglar un posible bug de borde de la foto
+        console.log("✅ one-pager wireframe vib-ribbon lista - Edita textos e imagen");
     })();
 </script>
 </body>
