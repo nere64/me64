@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>SAM · One-Pager Vib-Ribbon | Editable + PNG/GIF + GitHub Pages</title>
+    <!-- Librerías para exportar PNG y GIF -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.js"></script>
+    <style>
+        /* ---------- RESET Y BASE VIB-RIBBON / WIREFRAME ---------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #000000;
+            font-family: 'Courier New', 'Fira Code', 'VT323', 'Source Code Pro', monospace;
+            font-weight: 400;
+            line-height: 1.4;
+            color: #FFFFFF;
+            padding: 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* contenedor principal one-pager */
+        .one-pager {
+            max-width: 1300px;
+            width: 100%;
+            margin: 0 auto;
+            background: #000000;
+            border: 1.5px solid #FFFFFF;
+            border-radius: 0px;
+            padding: 2rem;
+            box-shadow: 0 0 0 1px #000000, 0 0 0 3px #FFFFFF;
+            position: relative;
+            transition: all 0.2s;
+        }
+
+        /* decoración wireframe angular */
+        .one-pager::before {
+            content: "";
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            width: 40px;
+            height: 40px;
+            border-top: 2px solid var(--accent-neon, #39ff14);
+            border-left: 2px solid var(--accent-neon, #39ff14);
+            pointer-events: none;
+        }
+        .one-pager::after {
+            content: "";
+            position: absolute;
+            bottom: 12px;
+            right: 12px;
+            width: 40px;
+            height: 40px;
+            border-bottom: 2px solid var(--accent-magenta, #ff00cc);
+            border-right: 2px solid var(--accent-magenta, #ff00cc);
+            pointer-events: none;
+        }
+
+        /* grid responsiva */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1.1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        /* foto contenedor wireframe */
+        .foto-container {
+            border: 2px solid #FFFFFF;
+            background: #0a0a0a;
+            padding: 1rem;
+            position: relative;
+        }
+        .foto-container::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: -8px;
+            width: 20px;
+            height: 20px;
+            border-top: 2px solid var(--accent-cyan, #00ffff);
+            border-left: 2px solid var(--accent-cyan, #00ffff);
+        }
+        .foto-wrapper {
+            width: 100%;
+            background: #010101;
+            border: 1px solid #FFFFFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 320px;
+            overflow: hidden;
+        }
+        .foto-perfil {
+            display: block;
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            background: #111;
+            aspect-ratio: 1 / 1;
+        }
+        .edit-hint-photo {
+            font-size: 0.7rem;
+            color: #aaaaaa;
+            text-align: center;
+            margin-top: 12px;
+            border-top: 1px dashed var(--accent-neon, #39ff14);
+            padding-top: 8px;
+        }
+        .photo-upload-btn {
+            background: #000;
+            border: 1px solid var(--accent-neon, #39ff14);
+            font-family: monospace;
+            font-size: 0.7rem;
+            padding: 6px 12px;
+            cursor: pointer;
+            color: var(--accent-neon, #39ff14);
+            transition: 0.2s;
+            text-transform: uppercase;
+            margin-top: 8px;
+            width: 100%;
+        }
+        .photo-upload-btn:hover {
+            background: #111;
+            border-color: #ffffff;
+            color: white;
+        }
+        .photo-status {
+            font-size: 0.65rem;
+            color: #39ff14;
+            text-align: center;
+            margin-top: 6px;
+        }
+
+        /* info panel */
+        .info-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.4rem;
+        }
+        .data-card {
+            border-left: 3px solid #FFFFFF;
+            padding-left: 1rem;
+        }
+        .nombre-linea {
+            font-size: 3rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            background: #000000;
+            line-height: 1;
+            text-shadow: 2px 2px 0px var(--accent-neon, #39ff14);
+            display: inline-block;
+        }
+        .badge-pronombres {
+            font-size: 1rem;
+            background: #000;
+            border: 1px solid #FFFFFF;
+            display: inline-block;
+            padding: 0.2rem 0.7rem;
+            margin-left: 0.8rem;
+            vertical-align: middle;
+        }
+        .fila-mini {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin: 0.8rem 0 0.2rem;
+        }
+        .attr-label {
+            font-weight: bold;
+            color: var(--accent-cyan, #00ffff);
+            text-transform: uppercase;
+        }
+        .actividad-input {
+            background: #0a0a0a;
+            border: 1px solid #FFFFFF;
+            font-family: monospace;
+            font-size: 1rem;
+            color: var(--accent-neon, #39ff14);
+            padding: 8px 12px;
+            width: 100%;
+            outline: none;
+            margin-top: 6px;
+        }
+        .actividad-input:focus {
+            border-color: var(--accent-magenta, #ff00cc);
+        }
+        .sobre-mi-box {
+            background: #000000;
+            border: 1px solid #FFFFFF;
+            padding: 0.8rem;
+            margin: 0.4rem 0;
+        }
+        .sobre-mi-box p {
+            font-family: monospace;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            color: #ffffff;
+            white-space: pre-wrap;
+            outline: none;
+        }
+        .sobre-mi-box p:focus {
+            border-left: 2px solid var(--accent-neon, #39ff14);
+            padding-left: 6px;
+        }
+        .linea-adicional {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            border-top: 1px dashed var(--accent-magenta, #ff00cc);
+            padding-top: 8px;
+        }
+        .wire-accents {
+            display: flex;
+            gap: 12px;
+            margin-top: 12px;
+        }
+        .wire-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--accent-neon, #39ff14);
+            clip-path: polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%);
+        }
+        .wire-line {
+            height: 2px;
+            width: 40px;
+            background: var(--accent-cyan, #00ffff);
+        }
+
+        /* Barra de herramientas */
+        .toolbar {
+            margin-top: 2rem;
+            border-top: 1px solid #ffffff30;
+            padding-top: 1.2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            align-items: center;
+            max-width: 1300px;
+            width: 100%;
+        }
+        .tool-btn {
+            background: #000;
+            border: 1px solid #fff;
+            font-family: monospace;
+            padding: 8px 14px;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-size: 0.8rem;
+        }
+        .tool-btn:hover {
+            background: #222;
+            border-color: var(--accent-neon, #39ff14);
+            color: var(--accent-neon, #39ff14);
+        }
+        .color-picker-group {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            flex-wrap: wrap;
+            background: #0a0a0a;
+            padding: 5px 12px;
+            border: 1px solid #333;
+        }
+        .color-label {
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .status-msg {
+            color: var(--accent-neon, #39ff14);
+            font-size: 0.7rem;
+            font-family: monospace;
+            background: #000;
+            padding: 4px 8px;
+            border: 1px solid #333;
+        }
+
+        /* responsive móvil */
+        @media (max-width: 780px) {
+            .dashboard {
+                grid-template-columns: 1fr;
+                gap: 1.8rem;
+            }
+            .nombre-linea {
+                font-size: 2.2rem;
+            }
+            body {
+                padding: 1rem;
+            }
+            .one-pager {
+                padding: 1.2rem;
+            }
+            .toolbar {
+                gap: 8px;
+            }
+            .tool-btn {
+                padding: 6px 10px;
+                font-size: 0.7rem;
+            }
+        }
+
+        :root {
+            --bg-color: #000000;
+            --text-main: #FFFFFF;
+            --accent-neon: #39ff14;
+            --accent-cyan: #00ffff;
+            --accent-magenta: #ff00cc;
+        }
+    </style>
+</head>
+<body>
+
+<div class="one-pager" id="onePagerToCapture">
+    <div class="dashboard">
+        <!-- COLUMNA FOTO: carga desde /imagenes/user (user.png o user.jpg) -->
+        <div class="foto-container">
+            <div class="foto-wrapper">
+                <img id="fotoPersonal" class="foto-perfil" 
+                     src="/imagenes/user.png" 
+                     alt="Foto personal - reemplazar en /imagenes/user.png"
+                     onerror="this.onerror=null; this.src='/imagenes/user.jpg'; console.log('fallback a user.jpg'); if(this.src.indexOf('user.jpg')!==-1 && this.naturalHeight===0) this.src='https://placekitten.com/500/500?image=5';">
+            </div>
+            <button id="btnSubirFoto" class="photo-upload-btn">📁 SUBIR Y GUARDAR EN /imagenes/user</button>
+            <div class="edit-hint-photo">⚡ foto leída desde /imagenes/user.png o .jpg (GitHub Pages)</div>
+            <div id="photoStatus" class="photo-status"></div>
+        </div>
+
+        <!-- COLUMNA INFO EDITABLE -->
+        <div class="info-panel">
+            <div class="data-card">
+                <div>
+                    <span class="nombre-linea" id="nombreEditable" contenteditable="true">SAM</span>
+                    <span class="badge-pronombres" id="pronombresEditable" contenteditable="true">El / ella / elle</span>
+                </div>
+                <div class="fila-mini">
+                    <div><span class="attr-label">🎂 CUMPLEAÑOS</span> <span id="cumpleanosEditable" contenteditable="true">18 de junio</span></div>
+                    <div><span class="attr-label">📍 CIUDAD</span> <span id="ciudadEditable" contenteditable="true">Quilpué</span></div>
+                </div>
+            </div>
+            <div class="data-card">
+                <div class="attr-label">⚡ PRINCIPAL ACTIVIDAD</div>
+                <input type="text" id="actividadInput" class="actividad-input" value="Estudiante / Creador">
+                <div class="wire-accents"><div class="wire-dot"></div><div class="wire-line"></div><div class="wire-dot" style="background:var(--accent-magenta)"></div></div>
+            </div>
+            <div class="data-card">
+                <div class="attr-label">📝 SOBRE MÍ</div>
+                <div class="sobre-mi-box">
+                    <p id="sobreMiTexto" contenteditable="true">*Mis pasatiempos son hacer animaciones tontas en Blender, jugar, ver casos de internet y ahora ando aprendiendo a hacer juegos en Pico-8*</p>
+                </div>
+                <div class="linea-adicional" id="lineaAdicionalEditable" contenteditable="true">🧠 Autista y TDAH</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Barra de herramientas + exportaciones -->
+<div class="toolbar">
+    <div class="color-picker-group">
+        <span class="color-label">🟢 Neón: <input type="color" id="neonColorPicker" value="#39ff14"></span>
+        <span class="color-label">🔵 Cian: <input type="color" id="cyanColorPicker" value="#00ffff"></span>
+        <span class="color-label">🟣 Magenta: <input type="color" id="magentaColorPicker" value="#ff00cc"></span>
+    </div>
+    <button id="exportPCHorizontalBtn" class="tool-btn">📸 PNG (PC / Horizontal)</button>
+    <button id="exportMobileVerticalBtn" class="tool-btn">📱 PNG (Móvil / Vertical)</button>
+    <button id="exportGifBtn" class="tool-btn">🎬 GIF Animado (wireframe)</button>
+    <div id="statusMsg" class="status-msg">✅ listo</div>
+</div>
+
+<script>
+    (function() {
+        // ---------- 1. COLORES DINÁMICOS ----------
+        const root = document.documentElement;
+        const neonPicker = document.getElementById('neonColorPicker');
+        const cyanPicker = document.getElementById('cyanColorPicker');
+        const magentaPicker = document.getElementById('magentaColorPicker');
+        
+        function updateColors() {
+            root.style.setProperty('--accent-neon', neonPicker.value);
+            root.style.setProperty('--accent-cyan', cyanPicker.value);
+            root.style.setProperty('--accent-magenta', magentaPicker.value);
+        }
+        neonPicker.addEventListener('input', updateColors);
+        cyanPicker.addEventListener('input', updateColors);
+        magentaPicker.addEventListener('input', updateColors);
+        
+        // ---------- 2. MANEJO DE FOTO: leer desde /imagenes/user.png (o .jpg) y permitir subir/reemplazar ----------
+        const fotoElement = document.getElementById('fotoPersonal');
+        const photoStatus = document.getElementById('photoStatus');
+        const statusMsgDiv = document.getElementById('statusMsg');
+        
+        function showStatus(msg, isError = false) {
+            statusMsgDiv.innerHTML = isError ? `⚠️ ${msg}` : `✅ ${msg}`;
+            statusMsgDiv.style.color = isError ? '#ff00cc' : '#39ff14';
+            setTimeout(() => {
+                if(statusMsgDiv.innerHTML === `✅ ${msg}` || statusMsgDiv.innerHTML === `⚠️ ${msg}`) {
+                    statusMsgDiv.innerHTML = '✅ listo';
+                    statusMsgDiv.style.color = '#39ff14';
+                }
+            }, 3000);
+        }
+        
+        // Función para guardar la imagen en la carpeta /imagenes como user.png (simulando escritura en GitHub Pages)
+        // En GitHub Pages no se puede escribir directamente en el repositorio desde el frontend, 
+        // pero podemos descargar el archivo para que el usuario lo coloque manualmente en /imagenes/user.png
+        // Esto es lo más cercano al flujo de trabajo real: el usuario sube, descarga y reemplaza en su repo.
+        function saveToImagenesFolder(file, base64Data) {
+            // Determinar extensión: forzamos .png para consistencia
+            const fileName = 'user.png';
+            // Crear enlace de descarga
+            const link = document.createElement('a');
+            link.download = fileName;
+            link.href = base64Data;
+            link.click();
+            showStatus(`Archivo guardado como ${fileName} · Colócalo en /imagenes/ de tu repo`, false);
+            photoStatus.innerHTML = `📁 Descargado: ${fileName} · Reemplaza en /imagenes/`;
+            setTimeout(() => { if(photoStatus.innerHTML.includes('Descargado')) photoStatus.innerHTML = ''; }, 5000);
+        }
+        
+        // Subir foto: leer archivo, actualizar vista y descargar para reemplazar en /imagenes/user.png
+        const btnSubir = document.getElementById('btnSubirFoto');
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.accept = 'image/jpeg, image/png, image/webp, image/gif';
+        
+        btnSubir.addEventListener('click', () => {
+            fileInput.click();
+        });
+        
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const base64 = e.target.result;
+                    fotoElement.src = base64;
+                    // Guardar como user.png para que el usuario lo ponga en /imagenes/
+                    saveToImagenesFolder(file, base64);
+                    // Mostrar mensaje adicional
+                    photoStatus.innerHTML = '🖼️ Foto actualizada (recuerda reemplazar en /imagenes/user.png)';
+                    setTimeout(() => {
+                        if(photoStatus.innerHTML.includes('actualizada')) photoStatus.innerHTML = '';
+                    }, 4000);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                showStatus("Archivo no válido", true);
+            }
+        });
+        
+        // Doble click para pegar URL externa (alternativa)
+        fotoElement.addEventListener('dblclick', () => {
+            let newUrl = prompt("Pegar URL de imagen externa (no afecta a /imagenes/user.png):", fotoElement.src);
+            if(newUrl && newUrl.trim() !== "") {
+                fotoElement.src = newUrl.trim();
+                showStatus("Imagen externa cargada (no persiste en /imagenes)", false);
+            }
+        });
+        
+        // Intentar cargar imagen inicial desde /imagenes/user.png con fallback
+        function loadInitialImage() {
+            const img = new Image();
+            img.onload = () => { fotoElement.src = '/imagenes/user.png'; showStatus("Foto cargada desde /imagenes/user.png", false); };
+            img.onerror = () => {
+                const imgJpg = new Image();
+                imgJpg.onload = () => { fotoElement.src = '/imagenes/user.jpg'; showStatus("Foto cargada desde /imagenes/user.jpg", false); };
+                imgJpg.onerror = () => { 
+                    fotoElement.src = 'https://placekitten.com/500/500?image=5';
+                    showStatus("Placeholder: sube una foto para /imagenes/user.png", false);
+                };
+                imgJpg.src = '/imagenes/user.jpg';
+            };
+            img.src = '/imagenes/user.png';
+        }
+        loadInitialImage();
+        
+        // ---------- 3. EXPORTACIÓN A PNG (Horizontal y Vertical) ----------
+        async function captureAsPNG(width, height, fileName) {
+            const element = document.getElementById('onePagerToCapture');
+            if (!element) return;
+            showStatus(`Generando ${fileName}...`, false);
+            try {
+                const canvas = await html2canvas(element, {
+                    scale: 2,
+                    backgroundColor: '#000000',
+                    logging: false,
+                    useCORS: true,
+                    allowTaint: false
+                });
+                // Redimensionar si es necesario
+                let finalCanvas = canvas;
+                if (canvas.width !== width || canvas.height !== height) {
+                    finalCanvas = document.createElement('canvas');
+                    finalCanvas.width = width;
+                    finalCanvas.height = height;
+                    const ctx = finalCanvas.getContext('2d');
+                    ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, width, height);
+                }
+                const link = document.createElement('a');
+                link.download = fileName;
+                link.href = finalCanvas.toDataURL('image/png');
+                link.click();
+                showStatus(`${fileName} exportado`, false);
+            } catch (err) {
+                console.error(err);
+                showStatus("Error en captura PNG", true);
+            }
+        }
+        
+        // PNG horizontal (PC) 1200x800 aprox manteniendo proporción pero fijamos 1200x auto? mejor respetar aspect del contenedor.
+        // Para mantener fidelidad visual: capturamos el contenedor real y exportamos en alta res.
+        document.getElementById('exportPCHorizontalBtn').addEventListener('click', () => {
+            captureAsPNG(1200, 0, 'SAM_one_pager_horizontal.png'); // height 0 = mantiene proporción original
+        });
+        document.getElementById('exportMobileVerticalBtn').addEventListener('click', () => {
+            captureAsPNG(450, 0, 'SAM_one_pager_vertical.png');
+        });
+        
+        // Ajuste opcional: para captura exacta con altura dinámica, html2canvas respeta dimensiones, pasamos width únicamente.
+        // Mejoramos la función para forzar tamaño custom:
+        async function captureFixed(element, width, height, fileName) {
+            const canvas = await html2canvas(element, { scale: 2, backgroundColor: '#000000', useCORS: true });
+            const finalCanvas = document.createElement('canvas');
+            finalCanvas.width = width;
+            finalCanvas.height = height;
+            const ctx = finalCanvas.getContext('2d');
+            ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, width, height);
+            const link = document.createElement('a');
+            link.download = fileName;
+            link.href = finalCanvas.toDataURL('image/png');
+            link.click();
+        }
+        
+        // Reemplazar handlers
+        document.getElementById('exportPCHorizontalBtn').onclick = async () => {
+            const el = document.getElementById('onePagerToCapture');
+            showStatus("Exportando horizontal (1200x900)...");
+            await captureFixed(el, 1200, 900, 'SAM_horizontal.png');
+            showStatus("Horizontal listo");
+        };
+        document.getElementById('exportMobileVerticalBtn').onclick = async () => {
+            const el = document.getElementById('onePagerToCapture');
+            showStatus("Exportando vertical (450x750)...");
+            await captureFixed(el, 450, 750, 'SAM_vertical.png');
+            showStatus("Vertical listo");
+        };
+        
+        // ---------- 4. EXPORTAR GIF ANIMADO (wireframe animado: líneas y acentos parpadeantes) ----------
+        // Creamos un GIF a partir de múltiples capturas simulando animación de wireframe (cambios en colores/bordes)
+        let gifWorkerUrl = 'https://cdn.jsdelivr.net/npm/gif.js@0.2.0/dist/gif.worker.js';
+        GIF.workers = 2;
+        GIF.workerScript = gifWorkerUrl;
+        
+        document.getElementById('exportGifBtn').addEventListener('click', async () => {
+            showStatus("🎬 Generando GIF animado (espera unos segundos)...", false);
+            const element = document.getElementById('onePagerToCapture');
+            const gif = new GIF({
+                workers: 2,
+                quality: 10,
+                width: 500,
+                height: 500,
+                workerScript: gifWorkerUrl
+            });
+            
+            // Guardamos estilos originales
+            const originalNeon = root.style.getPropertyValue('--accent-neon') || '#39ff14';
+            const originalCyan = root.style.getPropertyValue('--accent-cyan') || '#00ffff';
+            const originalMagenta = root.style.getPropertyValue('--accent-magenta') || '#ff00cc';
+            
+            // frames: variaciones de colores y parpadeo de bordes para simular Vib-Ribbon
+            const variations = [
+                { neon: '#39ff14', cyan: '#00ffff', magenta: '#ff00cc', delay: 300 },
+                { neon: '#ff00cc', cyan: '#39ff14', magenta: '#00ffff', delay: 300 },
+                { neon: '#00ffff', cyan: '#ff00cc', magenta: '#39ff14', delay: 300 },
+                { neon: '#ffffff', cyan: '#39ff14', magenta: '#ff00cc', delay: 300 },
+                { neon: '#39ff14', cyan: '#ffffff', magenta: '#00ffff', delay: 300 },
+                { neon: originalNeon, cyan: originalCyan, magenta: originalMagenta, delay: 300 }
+            ];
+            
+            for (let i = 0; i < variations.length; i++) {
+                const v = variations[i];
+                root.style.setProperty('--accent-neon', v.neon);
+                root.style.setProperty('--accent-cyan', v.cyan);
+                root.style.setProperty('--accent-magenta', v.magenta);
+                // esperar a que se apliquen los cambios visuales
+                await new Promise(r => setTimeout(r, 80));
+                const canvas = await html2canvas(element, { scale: 1.5, backgroundColor: '#000000', useCORS: true });
+                const resizedCanvas = document.createElement('canvas');
+                resizedCanvas.width = 500;
+                resizedCanvas.height = 500;
+                const ctx = resizedCanvas.getContext('2d');
+                ctx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, 500, 500);
+                gif.addFrame(resizedCanvas, { delay: v.delay, copy: true });
+            }
+            
+            // restaurar colores finales
+            root.style.setProperty('--accent-neon', originalNeon);
+            root.style.setProperty('--accent-cyan', originalCyan);
+            root.style.setProperty('--accent-magenta', originalMagenta);
+            
+            gif.on('finished', function(blob) {
+                const link = document.createElement('a');
+                link.download = 'SAM_vibribbon_animation.gif';
+                link.href = URL.createObjectURL(blob);
+                link.click();
+                showStatus("✅ GIF generado: SAM_vibribbon_animation.gif", false);
+            });
+            
+            gif.render();
+        });
+        
+        // Sincronizar colores pickers con valores actuales al inicio
+        function syncPickers() {
+            const neon = getComputedStyle(root).getPropertyValue('--accent-neon').trim();
+            const cyan = getComputedStyle(root).getPropertyValue('--accent-cyan').trim();
+            const magenta = getComputedStyle(root).getPropertyValue('--accent-magenta').trim();
+            if(neon) neonPicker.value = neon;
+            if(cyan) cyanPicker.value = cyan;
+            if(magenta) magentaPicker.value = magenta;
+        }
+        syncPickers();
+        
+        // Asegurar que todos los textos contenteditable mantengan estilo
+        console.log("✅ One-pager listo - GitHub Pages compatible - Foto desde /imagenes/user");
+    })();
+</script>
+</body>
+</html>
